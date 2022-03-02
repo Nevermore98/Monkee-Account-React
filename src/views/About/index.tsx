@@ -1,7 +1,7 @@
 import React from 'react'
 import { Button } from 'react-vant'
 
-export default function About() {
+const About = () => {
   return (
     <div>
       About
@@ -9,3 +9,4 @@ export default function About() {
     </div>
   )
 }
+export default About

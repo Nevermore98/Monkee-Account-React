@@ -1,0 +1,34 @@
+import React, { useState } from 'react'
+import { Tabbar } from 'react-vant'
+import {  useNavigate } from 'react-router-dom'
+import s from './style.module.less'
+import CustomIcon from '@/components/CustomIcon'
+
+const NavBar = () => {
+  const navigate = useNavigate()
+  const [name, setName] = useState('bill')
+
+
+  return (
+    <Tabbar
+      value={name}
+      onChange={(value) => {
+        setName(value as string)
+        navigate(value as string)
+      }}
+      activeColor="#61dafb"
+    >
+      <Tabbar.Item icon={<CustomIcon name="icon-bill" />} name="bill">
+        账单
+      </Tabbar.Item>
+      <Tabbar.Item icon={<CustomIcon name="icon-statistic" />} name="statistic">
+        统计
+      </Tabbar.Item>
+      <Tabbar.Item icon={<CustomIcon name="icon-user" />} name="user">
+        我的
+      </Tabbar.Item>
+    </Tabbar>
+  )
+}
+
+export default NavBar
