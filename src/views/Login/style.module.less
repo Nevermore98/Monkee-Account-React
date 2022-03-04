@@ -1,0 +1,81 @@
+@import url('@/config/custom.less');
+.auth {
+  --rv-field-clear-icon-size: 20px;
+  --rv-field-icon-size: 24px;
+
+  min-height: 100vh;
+  .name {
+    margin: 10px 0;
+    text-align: center;
+    font-size: 30px;
+    font-weight: bold;
+  }
+  .title {
+    margin: 10px 0;
+    text-align: center;
+    font-size: 24px;
+    font-weight: bold;
+  }
+  .logo {
+    width: 150px;
+    display: block;
+    margin: 0 auto;
+    margin-bottom: 20px;
+  }
+  .form-wrap {
+    margin: 30px 50px 0 50px;
+    min-height: 200px;
+    :global {
+      .rv-field {
+        font-size: 20px;
+        input::placeholder {
+          font-size: 18px;
+        }
+      }
+      .rv-field__body {
+        min-height: 40px;
+        border-bottom: 1px solid @rv-gray-5;
+      }
+    }
+  }
+  .submit {
+    display: flex;
+    justify-content: center;
+    margin: 10px 0 20px 0;
+    :global {
+      .rv-button {
+        height: 60px;
+        width: 60px;
+        border-radius: 100%;
+      }
+      .rv-button__icon {
+        font-size: 1.8em;
+      }
+    }
+  }
+  .change-type {
+    text-align: center;
+    color: @rv-gray-7;
+    font-size: 14px;
+  }
+  .terms {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 50px;
+    :global {
+      .rv-checkbox {
+        display: inline-block;
+        margin-right: 10px;
+      }
+    }
+    .termsText {
+      color: #000;
+      font-weight: bold;
+    }
+    a {
+      color: @rv-gray-6;
+      text-decoration: underline;
+    }
+  }
+}
