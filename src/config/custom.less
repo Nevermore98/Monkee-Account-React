@@ -1,5 +1,5 @@
 @color: #6b6b6b;
-
+@primary: #39be77;
 @rv-gray-1: #f7f8fa;
 @rv-gray-2: #f2f3f5;
 @rv-gray-3: #ebedf0;
@@ -8,3 +8,43 @@
 @rv-gray-6: #969799;
 @rv-gray-7: #646566;
 @rv-gray-8: #323232;
+
+@primary: #39be77; // 主题色
+@danger: #fc3c0c;
+@primary-bg: #f5f5f5;
+@link-color: #597fe7;
+@text-warning: #ecbe25;
+
+// 文本色
+@color-text-base: rgba(0, 0, 0, 0.9);
+@color-text-caption: rgba(0, 0, 0, 0.5);
+@color-text-secondary: rgba(0, 0, 0, 0.3);
+// @color-text-light: #DCDCDC;
+@link-color: #597fe7;
+
+.button-active {
+  &:hover,
+  &:focus {
+    outline: none;
+  }
+  &::-moz-focus-inner {
+    border: 0;
+  }
+  &::before {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 100%;
+    height: 100%;
+    background-color: #000;
+    border: 1px solid #000;
+    border-radius: inherit;
+    -webkit-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+    opacity: 0;
+    content: '';
+  }
+  &:active::before {
+    opacity: 0.1;
+  }
+}
