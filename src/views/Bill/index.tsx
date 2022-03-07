@@ -1,77 +1,85 @@
+import { BillType } from '@/api/bill'
 import BillItem from '@/components/BillItem'
 import CustomIcon from '@/components/CustomIcon'
 import { get } from '@/utils'
-import React, { useState } from 'react'
-import { Button, PullRefresh, Toast } from 'react-vant'
+import dayjs from 'dayjs'
+import React, { useEffect, useRef, useState } from 'react'
+import { Button, List, PullRefresh, Toast } from 'react-vant'
 
 import s from './style.module.less'
 
 const Bill = () => {
-  const [currentSelect, setCurrentSelect] = useState({})
-  const [list, setList] = useState([
-    {
-      daily_bill: [
-        {
-          amount: 25.0,
-          datetime: '2022-03-25 02:58:17',
-          id: 222,
-          type: 1,
-          remark: '备注',
-          category_id: 1,
-          category_name: '餐饮'
-        }
-      ],
-      date: '2021-06-1'
-    }
-  ])
+  const [totalExpense, setTotalExpense] = useState(0) // 总支出
+  const [totalIncome, setTotalIncome] = useState(0) // 总收入
+  const [currentSelect, setCurrentSelect] = useState<BillType>({}) // 当前筛选类型
+  const [currentTime, setCurrentTime] = useState(dayjs().format('YYYY-MM')) // 当前筛选时间
+
+  const [page, setPage] = useState(1) // 分页
+  const [totalPage, setTotalPage] = useState(0) // 分页总数
+  const [list, setList] = useState([]) // 账单列表
+  const [finished, setFinished] = useState(false) // 加载完成状态
+  const [loading, setLoading] = useState(false) // 加载完成状态
+  const listRef = useRef(null)
+
+  // const [refreshing, setRefreshing] = useState(REFRESH_STATE.normal) // 下拉刷新状态
+  // const [loading, setLoading] = useState(LOAD_STATE.normal) // 上拉加载状态
+
+  useEffect(() => {
+    getBillList() // 初始化
+  }, [page])
 
   // 获取账单方法
-  // const getBillList = async () => {
-  //   const { data } = await get(
-  //     `/api/bill/list?page=${page}&page_size=5&date=${currentTime}`
-  //   )
-  //   // 下拉刷新，重制数据
-  //   if (page == 1) {
-  //     setList(data.list)
-  //   } else {
-  //     setList(list.concat(data.list))
-  //   }
-  //   setTotalPage(data.totalPage)
-  //   // 上滑加载状态
-  //   setLoading(LOAD_STATE.success)
-  //   setRefreshing(REFRESH_STATE.success)
-  // }
-
-  const onRefresh = (showToast) => {
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        if (showToast) {
-          Toast.info('刷新成功')
-        }
-        resolve(true)
-      }, 1000)
-    })
-  }
-
   const getBillList = async () => {
-    const { data } = await get(
-      `/api/bill/list?page=${page}&page_size=5&date=${currentTime}&type_id=${
-        currentSelect.id || 'all'
-      }`
-    )
-    // 下拉刷新，重制数据
-    // if (page == 1) {
-    //   setList(data.list)
-    // } else {
-    //   setList(list.concat(data.list))
-    // }
-    // setTotalExpense(data.totalExpense.toFixed(2))
-    // setTotalIncome(data.totalIncome.toFixed(2))
-    // setTotalPage(data.totalPage)
-    // // 上滑加载状态
-    // setLoading(LOAD_STATE.success)
-    // setRefreshing(REFRESH_STATE.success)
+    try {
+      const { data } = await get(
+        `/api/bill/list?page=${page}&page_size=5&date=${currentTime}&type_id=${
+          currentSelect.id || 'all'
+        }`
+      )
+      console.log(data)
+      // 下拉刷新，重置数据
+      if (page === 1) {
+        setList(data.list)
+      } else {
+        setList(list.concat(data.list))
+      }
+      setTotalExpense(data.totalExpense.toFixed(2))
+      setTotalIncome(data.totalIncome.toFixed(2))
+      setTotalPage(data.totalPage)
+      // 上滑加载状态
+      setFinished(true)
+      // setLoading(false)
+    } catch (error) {
+      console.log(error)
+    } finally {
+      if (page < totalPage) {
+        setPage(page + 1)
+      } else {
+        setFinished(true)
+      }
+      setLoading(false)
+    }
   }
+  // TODO 下拉刷新延迟一会
+  const onRefresh = async () => {
+    setLoading(true)
+    setFinished(false)
+
+    if (page !== 1) {
+      setPage(1)
+    } else {
+      await getBillList()
+    }
+    // listRef.current?.check()
+  }
+
+  const loadData = () => {
+    if (page < totalPage) {
+      // setLoading(true)
+      setPage(page + 1)
+    }
+  }
+
   return (
     <div className={s.bill}>
       {/* 账单顶部筛选总览区域 */}
@@ -84,24 +92,29 @@ const Bill = () => {
         <div className={s.dataWrap}>
           <Button className={s.time} size="mini">
             <span className={s.time}>
-              <span>2022-06</span>
+              <span>{currentTime}</span>
               <CustomIcon name="icon-sort-down" />
             </span>
           </Button>
-          <span className={s.expense}>总支出 ￥100.00</span>
-          <span className={s.income}>总收入 ￥100.00</span>
+          <span className={s.expense}>总支出 ￥{totalExpense}</span>
+          <span className={s.income}>总收入 ￥{totalIncome}</span>
         </div>
       </div>
       {/* 账单列表 */}
-      <div className={s.contentWrapper}>
-        {/* <PullRefresh onRefresh={() => onRefresh(true)}>
-          {list.map((item, index) => (
-            <BillItem bills={item} key={index} />
-          ))}
-        </PullRefresh> */}
-        {list.map((item, index) => (
-          <BillItem bill={item} key={index} />
-        ))}
+      <div className={s.contentWrap}>
+        <PullRefresh onRefresh={onRefresh}>
+          <List
+            finished={finished}
+            loading={loading}
+            onLoad={loadData}
+            finishedText="没有更多了~"
+            ref={listRef}
+          >
+            {list.length
+              ? list.map((item, index) => <BillItem bill={item} key={index} />)
+              : null}
+          </List>
+        </PullRefresh>
       </div>
     </div>
   )

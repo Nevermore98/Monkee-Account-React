@@ -50,6 +50,7 @@ const Login = () => {
           password
         })
         localStorage.setItem('token', data.token)
+        window.location.href = '/'
       } else {
         if (!verify) {
           Toast.info('请输入验证码')
