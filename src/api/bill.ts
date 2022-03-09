@@ -59,8 +59,9 @@
 
 /** 账单类型*/
 export interface BillType {
-  id?: number // 0 表示全部类型
+  id: number // 0 表示全部类型
   name?: string
+  // TODO type 修改为 1 | 2
   type?: '1' | '2' // '1' 为支出，'2'为收入
   user_id?: number
 }

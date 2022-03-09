@@ -1,6 +1,8 @@
 import { BillType } from '@/api/bill'
 import BillItem from '@/components/BillItem'
 import CustomIcon from '@/components/CustomIcon'
+import PopupCategory from '@/components/PopupCategory'
+import PopupDate from '@/components/PopupDate'
 import { get } from '@/utils'
 import dayjs from 'dayjs'
 import React, { useEffect, useRef, useState } from 'react'
@@ -9,9 +11,12 @@ import { Button, List, PullRefresh, Toast } from 'react-vant'
 import s from './style.module.less'
 
 const Bill = () => {
+  const categoryRef = useRef(null) // 账单类型 ref
+  const dateRef = useRef(null) // 日期筛选 ref
+
   const [totalExpense, setTotalExpense] = useState(0) // 总支出
   const [totalIncome, setTotalIncome] = useState(0) // 总收入
-  const [currentSelect, setCurrentSelect] = useState<BillType>({}) // 当前筛选类型
+  const [currentCategory, setCurrentCategory] = useState<BillType>({ id: 0 }) // 当前筛选类型
   const [currentTime, setCurrentTime] = useState(dayjs().format('YYYY-MM')) // 当前筛选时间
 
   const [page, setPage] = useState(1) // 分页
@@ -26,14 +31,17 @@ const Bill = () => {
 
   useEffect(() => {
     getBillList() // 初始化
-  }, [page])
+    console.log('categoryRef', categoryRef)
+    console.log('dateRef', dateRef)
+    console.log('currentTime', currentTime)
+  }, [page, currentCategory, currentTime])
 
   // 获取账单方法
   const getBillList = async () => {
     try {
       const { data } = await get(
         `/api/bill/list?page=${page}&page_size=5&date=${currentTime}&type_id=${
-          currentSelect.id || 'all'
+          currentCategory.id || 'all'
         }`
       )
       console.log(data)
@@ -75,22 +83,43 @@ const Bill = () => {
 
   const loadData = () => {
     if (page < totalPage) {
-      // setLoading(true)
       setPage(page + 1)
     }
+  }
+
+  const handleSelectCategory = (item: BillType) => {
+    setLoading(true)
+    setPage(1)
+    setCurrentCategory(item)
+  }
+  // TODO 存在过期闭包的 bug
+  const handleSelectDate = (item: Date) => {
+    setPage(1)
+    setCurrentTime(dayjs(item).format('YYYY-MM'))
   }
 
   return (
     <div className={s.bill}>
       {/* 账单顶部筛选总览区域 */}
       <div className={s.header}>
-        <Button size="small" type="primary" className={s.typeWrap}>
-          <span className={s.allType}>全部类型</span>
+        <Button
+          size="small"
+          type="primary"
+          className={s.typeWrap}
+          onClick={() => categoryRef.current!.show()}
+        >
+          <span className={s.allType}>
+            {currentCategory.name || '全部类型'}
+          </span>
           <CustomIcon name="icon-type" />
         </Button>
 
         <div className={s.dataWrap}>
-          <Button className={s.time} size="mini">
+          <Button
+            className={s.time}
+            size="mini"
+            onClick={() => dateRef.current!.show()}
+          >
             <span className={s.time}>
               <span>{currentTime}</span>
               <CustomIcon name="icon-sort-down" />
@@ -116,6 +145,8 @@ const Bill = () => {
           </List>
         </PullRefresh>
       </div>
+      <PopupCategory ref={categoryRef} onSelect={handleSelectCategory} />
+      <PopupDate ref={dateRef} onSelect={handleSelectDate} />
     </div>
   )
 }
