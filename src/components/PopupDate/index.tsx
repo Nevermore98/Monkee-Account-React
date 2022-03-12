@@ -17,7 +17,8 @@ const PopupDate: FC<Props> = forwardRef(({ onSelect }, ref: any) => {
    * 正确的做法是将minDate作为一个数据定义在data函数中。
    * https://3lang3.github.io/react-vant/#/zh-CN/datetime-picker
    */
-  const maxDate = new Date()
+  const [maxDate, setMaxDate] = useState(new Date())
+
   const minDate = new Date(new Date().setFullYear(maxDate.getFullYear() - 10))
 
   const selectDate = (item: Date) => {

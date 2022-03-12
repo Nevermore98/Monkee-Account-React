@@ -94,5 +94,13 @@
       font-size: 24px;
       margin-right: 4px;
     }
+    // 相比于 vant，react-vant 的 button__text 没有居中对齐的样式
+    :global {
+      .rv-button__text {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+    }
   }
 }

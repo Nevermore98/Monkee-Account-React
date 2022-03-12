@@ -65,6 +65,10 @@ export interface BillType {
   type?: '1' | '2' // '1' 为支出，'2'为收入
   user_id?: number
 }
+export interface CategoryIcon {
+  id: number
+  name: string
+}
 
 export type BillTypeList = BillType[]
 

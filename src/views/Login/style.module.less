@@ -1,11 +1,22 @@
 @import url('@/config/custom.less');
 .auth {
-  --rv-field-clear-icon-size: 20px;
+  // :global {
+  //   .rv-icon-clear {
+  //     right: 0;
+  //     font-size: 36px;
+  //   }
+  //   .rv-field__right-icon {
+  //     font-size: 24px !important;
+  //   }
+  // }
+  // 直接修改属性
+  --rv-field-clear-icon-size: 36px;
   --rv-field-icon-size: 24px;
 
-  min-height: 100vh;
+  height: 100%;
   .name {
-    margin: 10px 0;
+    // 这里使用 margin 会导致 auth 有上边距，出现滚动条
+    padding: 10px 0;
     text-align: center;
     font-size: 30px;
     font-weight: bold;
@@ -62,7 +73,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-top: 50px;
+    margin-top: 42px;
     :global {
       .rv-checkbox {
         display: inline-block;

@@ -1,6 +1,7 @@
 import { BillType } from '@/api/bill'
 import BillItem from '@/components/BillItem'
 import CustomIcon from '@/components/CustomIcon'
+import PopupAddBill from '@/components/PopupAddBill'
 import PopupCategory from '@/components/PopupCategory'
 import PopupDate from '@/components/PopupDate'
 import { get } from '@/utils'
@@ -13,6 +14,7 @@ import s from './style.module.less'
 const Bill = () => {
   const categoryRef = useRef(null) // 账单类型 ref
   const dateRef = useRef(null) // 日期筛选 ref
+  const addBillRef = useRef(null) // 添加账单 ref
 
   const [totalExpense, setTotalExpense] = useState(0) // 总支出
   const [totalIncome, setTotalIncome] = useState(0) // 总收入
@@ -145,8 +147,20 @@ const Bill = () => {
           </List>
         </PullRefresh>
       </div>
+      {/* 添加账单按钮 */}
+      <Button
+        round
+        type="primary"
+        className={s.addWrap}
+        onClick={() => addBillRef.current!.show()}
+      >
+        <CustomIcon name="icon-add-bill" className={s.addIcon} />
+        记一笔
+      </Button>
+
       <PopupCategory ref={categoryRef} onSelect={handleSelectCategory} />
       <PopupDate ref={dateRef} onSelect={handleSelectDate} />
+      <PopupAddBill ref={addBillRef} />
     </div>
   )
 }

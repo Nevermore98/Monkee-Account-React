@@ -111,7 +111,7 @@ const BillItem = (props: Props) => {
           key={item.id}
           onClick={() => goToDetail(item)}
           title={item.type_name}
-          label={`${dayjs(item.date).format('HH:mm')}${
+          label={`${dayjs(Number(item.date)).format('HH:mm')}${
             item.remark ? ' | ' + item.remark : ''
           }`}
           icon={
