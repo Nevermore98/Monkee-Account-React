@@ -1,0 +1,21 @@
+@import url('@/config/custom.less');
+
+.block {
+  width: 100%;
+  height: 46px;
+}
+.header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+}
+// 全局修改 Header 样式
+:global {
+  .rv-nav-bar .rv-icon {
+    color: @color-text-base;
+  }
+  .rv-nav-bar__arrow {
+    font-size: 20px;
+  }
+}
