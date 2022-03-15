@@ -13,19 +13,24 @@ import s from './style.module.less'
 import CustomIcon from '../CustomIcon'
 import dayjs from 'dayjs'
 import { CalendarValue } from 'react-vant/es/calendar/PropsType'
-import { get, post, typeMap } from '@/utils'
-import { BillType, CategoryIcon, TypeMap } from '@/api/bill'
+import { changeConfirmButtonColor, get, post, typeMap } from '@/utils'
+import { BillType, CategoryIcon, ReqDetail, TypeMap } from '@/api/bill'
 import useInput from '@/hooks/useInput'
 
-const PopupAddBill = forwardRef((props, ref: any) => {
+interface Props {
+  detail?: ReqDetail
+  onReload?: () => void
+}
+
+const PopupAddBill = forwardRef((props: Props, ref: any) => {
   const { amount, setAmount, handleInput, handleDelete } = useInput()
   const [visible, setVisible] = useState(false)
   const [type, setType] = useState('expense')
   const [calendarVisible, setCalendarVisible] = useState(false)
   // CalendarValue 类型是 Date[]，属实给整不会了
-  const [selectedDate, setSelectedDate] = useState(new Date() as CalendarValue)
+  const [selectedDate, setSelectedDate] = useState(dayjs())
   const formattedDate = useMemo(
-    () => dayjs(selectedDate as Date).format('MM-DD'),
+    () => dayjs(selectedDate).format('MM-DD'),
     [selectedDate]
   )
   // const maxDate = new Date()
@@ -41,17 +46,38 @@ const PopupAddBill = forwardRef((props, ref: any) => {
     id: 0,
     name: ''
   })
+  const { detail } = props
+  const detailId = detail && detail.id // 外部传进来的账单详情 id
 
-  // 直接操作 DOM 实现切换确认键颜色
-  const changeConfirmButtonColor = (type: string) => {
-    const button: HTMLElement = document.querySelector('.rv-key--blue')! // 一定存在该节点
-    if (type === 'expense') {
-      button.style.background = '#39be77'
-    } else {
-      button.style.background = '#ecbe25'
-    }
+  // 初始化添加账单弹出层
+  const initAddBill = () => {
+    setVisible(false)
+    // 添加账单时，数字键盘确认键颜色默认为支出颜色
+    changeConfirmButtonColor('expense')
+    // 关闭后不会自动重新渲染，需要自己手动设置
+    setType('expense')
+    setSelectedDate(dayjs())
+    setAmount('')
+    setSelectedCategory({ id: 0, name: '' })
+    setRemark('')
   }
-  // changeConfirmButtonColor('expense')
+  // 初始化编辑账单弹出层
+  const initEditBill = () => {
+    setType(detail.pay_type === 1 ? 'expense' : 'income')
+    setSelectedCategory({ id: detail.type_id, name: detail.type_name })
+    setRemark(detail.remark)
+    setAmount(detail.amount)
+    setSelectedDate(dayjs(Number(detail.date)).$d)
+
+    changeConfirmButtonColor(detail.pay_type === 1 ? 'expense' : 'income')
+  }
+  // 编辑账单副作用
+  useEffect(() => {
+    if (detailId) {
+      initEditBill()
+    }
+  }, [detail])
+
   /**
    * useEffect async 函数
    * https://zhuanlan.zhihu.com/p/65773322
@@ -67,17 +93,19 @@ const PopupAddBill = forwardRef((props, ref: any) => {
       setIncome(income)
     }
     fetchCategoryData()
+    // // 没有 id 的情况下，说明是新建账单。
+    // if (!detail.id) {
+    //   setCurrentType(_expense[0])
+    // }
   }, [])
 
   const closePopAdd = () => {
+    if (detailId) {
+      initEditBill()
+    } else {
+      initAddBill()
+    }
     setVisible(false)
-    changeConfirmButtonColor('expense')
-    // 关闭后不会自动重新渲染，需要自己手动设置
-    setType('expense')
-    setSelectedDate(new Date())
-    setAmount('')
-    setSelectedCategory({ id: 0, name: '' })
-    setRemark('')
   }
 
   const changeType = (type: string) => {
@@ -86,7 +114,7 @@ const PopupAddBill = forwardRef((props, ref: any) => {
     changeConfirmButtonColor(type)
   }
 
-  const chooseDate = (value: CalendarValue) => {
+  const chooseDate = (value: any) => {
     setCalendarVisible(false)
     setSelectedDate(value)
     console.log(selectedDate)
@@ -110,19 +138,27 @@ const PopupAddBill = forwardRef((props, ref: any) => {
       amount: Number(amount).toFixed(2),
       type_id: selectedCategory.id,
       type_name: selectedCategory.name,
-      date: (dayjs(selectedDate as Date).unix() * 1000).toString(),
+      date: dayjs(selectedDate).unix() * 1000,
       pay_type: type == 'expense' ? 1 : 2,
       remark: remark || ''
     }
-    const result = await post('/api/bill/add', params)
-    setAmount('')
-    setType('expense')
-    setSelectedCategory({ id: 0, name: '' })
-    setSelectedDate(new Date())
-    setRemark('')
-    Toast.info('添加成功')
+    if (detailId) {
+      params.id = detailId
+      // 如果有 id 即是在编辑账单详情，需要调用详情更新接口
+      const result = await post('/api/bill/update', params)
+      Toast.success('修改成功')
+    } else {
+      const result = await post('/api/bill/add', params)
+      setAmount('')
+      setType('expense')
+      setSelectedCategory({ id: 0, name: '' })
+      setSelectedDate(dayjs())
+      setRemark('')
+      Toast.info('添加成功')
+    }
     setVisible(false)
-    // if (props.onReload) props.onReload()
+    // 修改完成后重新加载
+    if (props.onReload) props.onReload()
   }
 
   if (ref) {
@@ -142,13 +178,14 @@ const PopupAddBill = forwardRef((props, ref: any) => {
       round
       position="bottom"
       onClose={() => closePopAdd()}
+      onClickOverlay={() => closePopAdd()}
     >
       <div className={s.addWrap}>
         {/* 添加账单头部 */}
         <header className={s.header}>
-          <span className={s.closeWrap}>
+          <div className={s.closeWrap}>
             <Cross onClick={() => setVisible(false)} />
-          </span>
+          </div>
         </header>
         {/* 筛选类型和日期 */}
         <div className={s.filterWrap}>
@@ -163,7 +200,7 @@ const PopupAddBill = forwardRef((props, ref: any) => {
               onClick={() => changeType('income')}
               className={cx(s.income, { [s.active]: type === 'income' })}
             >
-              支出
+              收入
             </span>
           </div>
           <Button className={s.date} onClick={() => setCalendarVisible(true)}>
@@ -196,6 +233,7 @@ const PopupAddBill = forwardRef((props, ref: any) => {
                 <Button
                   className={s.typeItem}
                   onClick={() => chooseCategory(item)}
+                  key={item.id}
                 >
                   <div
                     className={cx({
@@ -241,3 +279,5 @@ const PopupAddBill = forwardRef((props, ref: any) => {
 })
 
 export default PopupAddBill
+
+// TODO 骨架屏，日期选择 onchange

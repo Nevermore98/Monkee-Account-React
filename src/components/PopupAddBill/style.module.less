@@ -34,6 +34,7 @@ global 放外层会影响所有组件的样式
     //   }
     // }
     .rv-field {
+      padding: 0;
       &__label {
         width: 30px;
       }
@@ -41,8 +42,9 @@ global 放外层会影响所有组件的样式
         position: relative;
       }
       &__clear {
+        font-size: 34px;
         position: absolute;
-        right: 8%;
+        right: 10%;
       }
       &__word-limit {
         position: absolute;
@@ -58,9 +60,11 @@ global 放外层会影响所有组件的样式
       display: flex;
       align-items: center;
 
-      .van-icon-cross {
-        font-size: 26px;
-        color: @color-text-secondary;
+      :global {
+        .rv-icon-cross {
+          font-size: 26px;
+          color: @color-text-secondary;
+        }
       }
     }
 
@@ -204,7 +208,7 @@ global 放外层会影响所有组件的样式
     }
   }
   .remark {
-    .van-cell {
+    .rv-cell {
       padding: 0;
     }
     padding: 14px 20px;

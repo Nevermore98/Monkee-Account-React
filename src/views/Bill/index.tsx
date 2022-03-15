@@ -8,6 +8,7 @@ import { get } from '@/utils'
 import dayjs from 'dayjs'
 import React, { useEffect, useRef, useState } from 'react'
 import { Button, List, PullRefresh, Toast } from 'react-vant'
+import cx from 'classnames'
 
 import s from './style.module.less'
 
@@ -127,8 +128,12 @@ const Bill = () => {
               <CustomIcon name="icon-sort-down" />
             </span>
           </Button>
-          <span className={s.expense}>总支出 ￥{totalExpense}</span>
-          <span className={s.income}>总收入 ￥{totalIncome}</span>
+          <span className={cx(s.expense, s.oneLineEllipsis)}>
+            总支出 ￥{totalExpense}
+          </span>
+          <span className={cx(s.income, s.oneLineEllipsis)}>
+            总收入 ￥{totalIncome}
+          </span>
         </div>
       </div>
       {/* 账单列表 */}

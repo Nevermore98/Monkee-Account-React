@@ -43,10 +43,6 @@
     .button-active();
 
     :global {
-      // 收支金额字体加粗
-      .rv-cell__value {
-        font-weight: 500;
-      }
       .rv-cell__left-icon {
         display: flex;
         justify-content: center;
@@ -56,6 +52,15 @@
         height: 36px;
         width: 36px;
         margin-right: 10px;
+      }
+      .rv-cell__label {
+        // less mixin
+        .multiple-line-ellipsis();
+      }
+      // 收支金额字体加粗
+      .rv-cell__value {
+        font-weight: 500;
+        max-width: 90px;
       }
     }
 

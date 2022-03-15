@@ -105,17 +105,17 @@ export interface RequestMonthData {
 
 /** 请求到的账单详情数据 */
 export interface ReqDetail {
-  amount?: string // 金额
-  date?: string // 时间戳
-  id?: number // 账单 id
-  pay_type?: 1 | 2 // 账单类型 1:支出 2:收入
-  remark?: string // 备注
-  type_id?: number // 消费类型 id
-  type_name?: string // 消费类型名
-  user_id?: number // 用户 id
+  amount: string // 金额
+  date: string // 时间戳
+  id: number // 账单 id
+  pay_type: 1 | 2 // 账单类型 1:支出 2:收入
+  remark: string // 备注
+  type_id: number // 消费类型 id
+  type_name: string // 消费类型名
+  user_id: number // 用户 id
 }
 export type TypeMap = {
-  [id: string]: {
+  [id: number]: {
     icon: string
   }
 }

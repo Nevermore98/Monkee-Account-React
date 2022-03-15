@@ -10,7 +10,7 @@
 @rv-gray-8: #323232;
 
 @primary: #39be77; // 主题色
-@danger: #fc3c0c;
+@danger: #ee0a24;
 @primary-bg: #f5f5f5;
 @link-color: #597fe7;
 @text-warning: #ecbe25;
@@ -47,4 +47,20 @@
   &:active::before {
     opacity: 0.1;
   }
+}
+
+// 单行省略
+.one-line-ellipsis {
+  overflow: hidden; //超出的文本隐藏
+  text-overflow: ellipsis; //溢出用省略号显示
+  white-space: nowrap; //溢出不换行
+}
+
+// 多行省略
+.multiple-line-ellipsis {
+  display: -webkit-box; // 弹性伸缩盒子模型
+  -webkit-box-orient: vertical; // 设置元素垂直排列
+  -webkit-line-clamp: 1; // 设置元素只显示一行
+  overflow: hidden;
+  text-overflow: ellipsis;
 }

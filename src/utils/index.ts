@@ -3,6 +3,19 @@ import axios from './axios'
 export const get = axios.get
 
 export const post = axios.post
+
+// 直接操作 DOM 实现切换数字键盘确认键颜色
+export const changeConfirmButtonColor = (type: string) => {
+  const button: HTMLElement | null = document.querySelector('.rv-key--blue')
+  if (button) {
+    if (type === 'expense') {
+      button.style.background = '#39be77'
+    } else {
+      button.style.background = '#ecbe25'
+    }
+  }
+}
+
 // 收支种类与图片的映射
 export const typeMap = {
   1: {
