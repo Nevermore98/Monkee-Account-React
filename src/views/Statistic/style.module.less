@@ -1,0 +1,145 @@
+@import url('@/config/custom.less');
+.header {
+  color: #fff;
+  .filter-wrap {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 40px 30px 20px 20px;
+    font-size: 14px;
+    .date {
+      height: 32px;
+      padding: 6px 10px;
+      background: transparent;
+      border: none;
+      border-radius: 4px;
+      font-weight: 500;
+      font-size: 16px;
+      color: #fff;
+    }
+    .type-tab {
+      span {
+        display: inline-block;
+        padding: 6px 12px;
+        font-size: 14px;
+        border-radius: 4px;
+        opacity: 0.5;
+      }
+      .expense {
+        margin-right: 6px;
+        &.active {
+          background-color: lighten(@primary, 4%);
+          border-color: @primary;
+          color: #fff;
+          opacity: 1;
+        }
+      }
+      .income {
+        &.active {
+          background-color: lighten(@text-warning, 4%);
+          border-color: @text-warning;
+          color: #fff;
+          opacity: 1;
+        }
+      }
+    }
+  }
+  .total-wrap {
+    display: flex;
+    flex-direction: column;
+    padding: 20px 30px;
+
+    .title {
+      opacity: 0.5;
+      font-size: 14px;
+    }
+    .total-amount {
+      padding: 20px 0;
+      font-size: 32px;
+      font-weight: 500;
+    }
+  }
+}
+// header 背景颜色随支出类型改变
+.expense-background {
+  background-color: @primary;
+}
+.income-background {
+  background-color: @text-warning;
+}
+
+.structure {
+  background-color: #fff;
+  font-size: 14px;
+
+  .title {
+    padding: 30px;
+    font-size: 16px;
+  }
+  .proportion-bar {
+    padding: 0 30px 100px 30px;
+    .bill-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      height: 40px;
+      .type-item {
+        display: flex;
+        align-items: center;
+        .icon-wrap {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          background-color: #f5f5f5;
+          border-radius: 50%;
+          height: 26px;
+          width: 26px;
+          margin-right: 8px;
+          svg {
+            font-size: 16px;
+            color: #fff;
+          }
+        }
+        .icon-name {
+          min-width: 40px;
+        }
+        .expense {
+          background-color: @primary;
+        }
+        .income {
+          background-color: @text-warning;
+        }
+      }
+
+      .progress {
+        margin-left: 22px;
+        width: 160px;
+      }
+      .amount {
+        width: 100px;
+        text-align: right;
+        font-weight: 500;
+      }
+    }
+  }
+}
+.empty {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 40px;
+  color: @color-text-caption;
+
+  .icon-wrap {
+    font-size: 40px;
+  }
+  .empty-button {
+    margin-top: 20px;
+    padding: 6px 12px;
+    font-size: 14px;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+  }
+}

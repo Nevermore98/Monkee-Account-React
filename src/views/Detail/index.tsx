@@ -65,7 +65,7 @@ const Detail = () => {
         {/* TODO 记录时间居中 */}
         {Object.keys(detail).length === 0 ? (
           <div className={s.skeletonWrap}>
-            <Skeleton title round animate row={3} loading />
+            <Skeleton title round row={3} />
           </div>
         ) : (
           <div className={s.card}>

@@ -32,7 +32,7 @@
 // export type BillList = DayBillList[]
 
 // /** 请求到的 单月账单 */
-// export interface RequestMonthData {
+// export interface ReqMonthData {
 //   list: BillList
 //   totalExpense: number
 //   totalIncome: number
@@ -96,7 +96,7 @@ export interface DayBillList {
 export type BillList = DayBillList[]
 
 /** 请求到的 单月账单 */
-export interface RequestMonthData {
+export interface ReqMonthData {
   list: BillList
   totalExpense: number
   totalIncome: number
@@ -114,6 +114,14 @@ export interface ReqDetail {
   type_name: string // 消费类型名
   user_id: number // 用户 id
 }
+//  请求到的月度收支种类统计数据
+export interface ReqMonthCategoryData {
+  type_id: number
+  type_name: string
+  pay_type: 1 | 2 // 账单类型 1:支出 2
+  number: number // 单月该收支种类总金额
+}
+
 export type TypeMap = {
   [id: number]: {
     icon: string
