@@ -1,4 +1,6 @@
 import axios from './axios'
+import { baseUrl } from '@/config'
+const MODE = import.meta.env.MODE // 环境变量
 
 export const get = axios.get
 
@@ -13,6 +15,17 @@ export const changeConfirmButtonColor = (type: string) => {
     } else {
       button.style.background = '#ecbe25'
     }
+  }
+}
+
+export const imgUrlTrans = (url: string) => {
+  if (url && url.startsWith('http')) {
+    return url
+  } else {
+    url = `${
+      MODE == 'development' ? 'http://api.chennick.wang' : baseUrl
+    }${url}`
+    return url
   }
 }
 

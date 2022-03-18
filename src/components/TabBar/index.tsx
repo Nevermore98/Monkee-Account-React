@@ -20,7 +20,7 @@ const NavBar = () => {
         setName(value as string)
         navigate(value as string)
       }}
-      activeColor="#61dafb"
+      activeColor="#39be77"
     >
       <Tabbar.Item icon={<CustomIcon name="icon-bill" />} name="/bill">
         账单

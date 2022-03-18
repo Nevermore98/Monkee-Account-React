@@ -36,7 +36,9 @@ const Detail = () => {
 
   const deleteDetail = () => {
     Dialog.confirm({
-      message: '删除后无法恢复，是否删除？'
+      message: '删除后无法恢复，是否删除？',
+      closeOnClickOverlay: true,
+      confirmButtonText: '删除'
     })
       .then(async () => {
         const { data } = await post('/api/bill/delete', { id })

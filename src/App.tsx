@@ -1,10 +1,5 @@
 import React, { useState } from 'react'
-import {
-  Routes,
-  Route,
-  Navigate,
-  useLocation
-} from 'react-router-dom'
+import { Routes, Route, Navigate, useLocation } from 'react-router-dom'
 
 import TabBar from '@/components/TabBar'
 import Bill from '@/views/Bill'
@@ -13,6 +8,7 @@ import User from '@/views/User'
 import Nomatch from '@/views/Nomatch'
 import Detail from '@/views/Detail'
 import Login from '@/views/Login'
+import EditInfo from './views/EditInfo'
 
 function App() {
   const showTabbarRouteList = ['/', '/bill', '/statistic', '/user']
@@ -28,6 +24,9 @@ function App() {
         <Route path="/statistic" element={<Statistic />} />
         <Route path="/user" element={<User />} />
         <Route path="/detail" element={<Detail />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/edit_info" element={<EditInfo />} />
+        <Route path="/login" element={<Login />} />
         <Route path="/login" element={<Login />} />
         <Route path="*" element={<Nomatch />} />
       </Routes>

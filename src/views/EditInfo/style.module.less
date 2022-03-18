@@ -1,0 +1,63 @@
+@import url('@/config/custom.less');
+.info {
+  padding: 20px;
+  .item {
+    margin-bottom: 20px;
+    h2 {
+      margin-bottom: 10px;
+    }
+  }
+
+  .avatar-section {
+    display: flex;
+    .avatar {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      margin-right: 10px;
+    }
+    .desc {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-around;
+      margin-left: 10px;
+    }
+  }
+  .signature {
+    :global {
+      .rv-field {
+        padding: 0;
+        &__label {
+          width: 30px;
+        }
+        &__body {
+          position: relative;
+        }
+        &__clear {
+          font-size: 34px;
+          position: absolute;
+          right: 10%;
+        }
+        &__word-limit {
+          position: absolute;
+          top: 0;
+          right: 0;
+        }
+      }
+    }
+  }
+
+  .btnWrap {
+    // position: absolute;
+    width: 90%;
+    // bottom: 80px;
+    // left: 0;
+    // right: 0;
+    margin: 40px auto 0 auto;
+    border-radius: 20px;
+    overflow: hidden;
+  }
+}
