@@ -8,7 +8,9 @@ import User from '@/views/User'
 import Nomatch from '@/views/Nomatch'
 import Detail from '@/views/Detail'
 import Login from '@/views/Login'
-import EditInfo from './views/EditInfo'
+import EditInfo from '@/views/EditInfo'
+import ModifyPassword from '@/views/ModifyPassword'
+import About from '@/views/About'
 
 function App() {
   const showTabbarRouteList = ['/', '/bill', '/statistic', '/user']
@@ -27,7 +29,8 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/edit_info" element={<EditInfo />} />
         <Route path="/login" element={<Login />} />
-        <Route path="/login" element={<Login />} />
+        <Route path="/modify_password" element={<ModifyPassword />} />
+        <Route path="/about" element={<About />} />
         <Route path="*" element={<Nomatch />} />
       </Routes>
 

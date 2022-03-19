@@ -1,0 +1,35 @@
+@import url('@/config/custom.less');
+.modify {
+  // 直接修改属性
+  --rv-field-clear-icon-size: 32px;
+
+  --rv-field-icon-size: 24px;
+
+  padding: 20px;
+  :global {
+    .rv-field {
+      display: flex;
+      align-items: center;
+      font-size: 16px;
+      input::placeholder {
+        font-size: 16px;
+      }
+      svg {
+        height: 0.8em;
+        display: inline-block;
+      }
+      &__label {
+        display: flex;
+        align-items: center;
+        width: 24%;
+        svg {
+          font-size: 1.2em;
+        }
+      }
+      &__body {
+        min-height: 28px;
+        // border-bottom: 1px solid @rv-gray-5;/
+      }
+    }
+  }
+}
