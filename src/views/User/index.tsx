@@ -14,9 +14,9 @@ const User = () => {
   const [uid, setUid] = useState(0)
   const [signature, setSignature] = useState('')
   const [avatar, setAvatar] = useState('')
-  const [show, setShow] = useState(false)
+  const [visible, setVisible] = useState(false)
   const token = localStorage.getItem('token')
-  // TODO 头像点击上传，个签点击修改
+
   useEffect(() => {
     getUserInfo()
   }, [])
@@ -35,77 +35,15 @@ const User = () => {
     () => username.slice(0, 1).toUpperCase() + username.slice(1),
     [username]
   )
-
-  // 上传头像并保存
-  const uploadAvatar = (file: UploaderFileListItem) => {
-    console.log('file.file', file.file)
-    let formData = new FormData()
-    // 生成 form-data 数据类型
-    formData.append('file', file.file)
-    // 通过 axios 设置  'Content-Type': 'multipart/form-data', 进行文件上传
-    // @ts-ignore
-    axios({
-      method: 'post',
-      url: `${baseUrl}/upload`,
-      data: formData,
-      headers: {
-        'Content-Type': 'multipart/form-data',
-        Authorization: token
-      }
-    }).then((res) => {
-      // 返回图片地址
-      console.log(res)
-
-      setAvatar(imgUrlTrans(res.data))
-      // save()
-    })
-    // .then(() => save())
-  }
-
-  // 提交修改信息
-  const save = async () => {
+  // 暂时无法实现点击头像上传图片后，再提交 post 请求
+  // 修改签名
+  const modifySignature = async () => {
     const { data } = await post('/api/user/edit_userinfo', {
-      signature,
-      avatar
+      avatar,
+      signature
     })
-    Toast.info('修改成功')
-  }
-
-  const editSignature = () => {
-    Dialog.confirm({
-      title: '修改个人签名',
-      closeOnClickOverlay: true,
-      confirmButtonText: '修改',
-      message: (
-        <Field
-          value={signature}
-          onChange={setSignature}
-          placeholder="请输入"
-          // maxlength={20}
-          showWordLimit
-          clearable
-          autosize
-          type="textarea"
-          rows={2}
-        />
-      )
-      // onConfirm: () => {
-      //   setSignature(signature)
-      //   save()
-      // }
-    })
-      .then(async () => {
-        const { data } = await post('/api/user/edit_userinfo', {
-          signature: signature,
-          avatar: avatar
-        })
-        console.log(data)
-        Toast.info('修改成功')
-      })
-      .catch((err) => {
-        console.log(err)
-        console.log('reject')
-      })
+    setVisible(false)
+    Toast.info('修改个性签名成功')
   }
 
   // 退出登录
@@ -118,21 +56,36 @@ const User = () => {
     <div className={s.user}>
       {/* 个人信息卡片 */}
       <div className={s.card}>
-        <Uploader afterRead={(file) => uploadAvatar(file)}>
-          <img className={s.avatar} src={avatar} alt="avatar" />
-        </Uploader>
+        <img className={s.avatar} src={avatar} alt="avatar" />
         <div className={s.info}>
           <div className={s.name}>{beautifyName || ''}</div>
           <div className={s.uid}>UID: {uid}</div>
-          <Button className={s.signature} onClick={editSignature}>
-            {/* {'红红火火恍恍惚惚或或哈哈哈哈哈哈二十字' || ''} */}
+          <Button className={s.signature} onClick={() => setVisible(true)}>
             {signature || ''}
           </Button>
         </div>
       </div>
+
       {/* 修改签名弹出框 */}
-      <Dialog title="个性签名">
-        <Field rows={2} />
+      <Dialog
+        visible={visible}
+        title="个性签名"
+        onCancel={() => setVisible(false)}
+        closeOnClickOverlay={true}
+        showCancelButton
+        onConfirm={modifySignature}
+        confirmButtonText="修改"
+      >
+        <Field
+          rows={1}
+          type="textarea"
+          autosize
+          value={signature}
+          placeholder="请输入个性签名"
+          onChange={setSignature}
+          maxlength={25}
+          showWordLimit
+        />
       </Dialog>
 
       {/* 各种操作的单元格 */}
@@ -152,7 +105,7 @@ const User = () => {
             icon={<CustomIcon name="icon-modify-password" />}
             isLink
             center
-            onClick={() => navigate('/edit_password')}
+            onClick={() => navigate('/modify_password')}
           />
           <Cell
             title="关于项目"
@@ -175,7 +128,6 @@ const User = () => {
           退出登录
         </Button>
       </div>
-      <Button onClick={save}>dinaji</Button>
     </div>
   )
 }

@@ -3,14 +3,13 @@ import { get, imgUrlTrans, post } from '@/utils'
 import React, { useEffect, useState } from 'react'
 import { Button, Field, Toast, Uploader } from 'react-vant'
 import type { UploaderFileListItem } from 'react-vant'
-import axios from 'axios' // 由于采用 form-data 传递参数，所以直接只用 axios 进行请求
-import { baseUrl } from '@/config' // 由于直接使用 axios 进行请求，统一封装了请求 baseUrl
+import axios from 'axios'
+import { baseUrl } from '@/config'
 
 import s from './style.module.less'
 import { useNavigate } from 'react-router-dom'
 
 const EditInfo = () => {
-  const [user, setUser] = useState({})
   const [avatar, setAvatar] = useState('')
   const [signature, setSignature] = useState('')
   const token = localStorage.getItem('token')
@@ -24,19 +23,15 @@ const EditInfo = () => {
   const getUserInfo = async () => {
     const { data } = await get('/api/user/get_userinfo')
     console.log(data)
-    // setUsername(data.username)
-    // setUid(data.id)
     setSignature(data.signature)
     setAvatar(imgUrlTrans(data.avatar))
-    // setAvatar(data.avatar)
   }
   // 上传头像
   const uploadAvatar = (file: UploaderFileListItem) => {
-    console.log('file.file', file.file)
+    console.log('file', file)
     let formData = new FormData()
-    // 生成 form-data 数据类型
     formData.append('file', file.file)
-    // 通过 axios 设置  'Content-Type': 'multipart/form-data', 进行文件上传
+    // 通过 axios 设置  'Content-Type': 'multipart/form-data', 进行文件上传。但文件只能在几十 kb 内
 
     // @ts-ignore
     axios({
@@ -48,12 +43,12 @@ const EditInfo = () => {
         Authorization: token
       }
     }).then((res) => {
-      // 返回图片地址
+      console.log('res', res)
       setAvatar(imgUrlTrans(res.data))
     })
   }
   // 图片超过限定大小
-  const onOversize = (file) => {
+  const onOversize = (file: any) => {
     console.log(file)
     Toast('文件大小不能超过 50KB')
   }
@@ -79,7 +74,7 @@ const EditInfo = () => {
           <div className={s.avatarSection}>
             <img className={s.avatar} src={avatar} alt="avatar" />
             <div className={s.desc}>
-              <span>支持 jpg、png、jpeg 格式大小 20KB!!?? 以内的图片</span>
+              <span>支持 jpg、png、jpeg 格式大小 50KB!!?? 以内的图片</span>
               <Uploader
                 afterRead={uploadAvatar}
                 maxSize={50 * 1024}
@@ -97,10 +92,13 @@ const EditInfo = () => {
           <h2>个性签名</h2>
           <div className={s.signature}>
             <Field
+              rows={1}
+              type="textarea"
+              autosize
               value={signature}
+              placeholder="请输入个性签名"
               onChange={setSignature}
-              maxlength={20}
-              clearable
+              maxlength={25}
               showWordLimit
             />
           </div>
