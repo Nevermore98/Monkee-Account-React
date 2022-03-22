@@ -53,6 +53,7 @@ const Detail = () => {
   }
 
   const editBill = () => {
+    // @ts-ignore
     editRef.current!.show()
     // 异步执行，因为弹出层弹出需要时间，同步执行就获取不到 button
     setTimeout(() => {

@@ -47,10 +47,16 @@ const Statistic = () => {
     // 过滤支出和收入
     const expense_data = data.total_data
       .filter((item: ReqMonthCategoryData) => item.pay_type === 1)
-      .sort((a, b) => b.number - a.number)
+      .sort(
+        (a: ReqMonthCategoryData, b: ReqMonthCategoryData) =>
+          b.number - a.number
+      )
     const income_data = data.total_data
       .filter((item: ReqMonthCategoryData) => item.pay_type === 2)
-      .sort((a, b) => b.number - a.number)
+      .sort(
+        (a: ReqMonthCategoryData, b: ReqMonthCategoryData) =>
+          b.number - a.number
+      )
     setExpenseData(expense_data)
     setIncomeData(income_data)
     setPieChart(curType === 'expense' ? expense_data : income_data)
@@ -71,9 +77,8 @@ const Statistic = () => {
   // 初始化饼图
   const setPieChart = async (data: ReqMonthCategoryData[]) => {
     try {
+      // @ts-ignore
       const pieChart = echarts.init(document.getElementById('pie-chart'))
-      console.log(data)
-
       const chartData = data.map((item: ReqMonthCategoryData) => {
         return {
           value: item.number,
@@ -140,6 +145,7 @@ const Statistic = () => {
         <div className={s.filterWrap}>
           <Button
             className={s.date}
+            // @ts-ignore
             onClick={() => popupDateRef.current!.show()}
           >
             {dayjs(curMonth).format('YYYY年MM月')}

@@ -1,4 +1,6 @@
 @import url('@/config/custom.less');
+@import url('@/assets/fonts/fonts.less');
+
 /**
 global 放外层会影响所有组件的样式
 但尝试了许多方法，选择器无法命中到 calendar，只能使用这个冒险的方法了
@@ -15,10 +17,14 @@ global 放外层会影响所有组件的样式
   }
 }
 .add-wrap {
+  // font-family: WeChatSans;
   padding-top: 12px;
   :global {
     .rv-number-keyboard {
       position: unset;
+      &__keys {
+        font-family: WeChatSans-Regular;
+      }
       .rv-key--blue {
         background-color: @primary;
       }
@@ -133,6 +139,7 @@ global 放外层会影响所有组件的样式
     .amount {
       font-size: 40px;
       padding-left: 10px;
+      font-family: WeChatSans-Medium;
     }
   }
   .animation::after {

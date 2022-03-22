@@ -12,9 +12,14 @@ import { Cross } from '@react-vant/icons'
 import s from './style.module.less'
 import CustomIcon from '../CustomIcon'
 import dayjs from 'dayjs'
-import { CalendarValue } from 'react-vant/es/calendar/PropsType'
 import { changeConfirmButtonColor, get, post, typeMap } from '@/utils'
-import { BillType, CategoryIcon, ReqDetail, TypeMap } from '@/api/bill'
+import {
+  BillType,
+  CategoryIcon,
+  DayBillItem,
+  ReqDetail,
+  TypeMap
+} from '@/api/bill'
 import useInput from '@/hooks/useInput'
 
 interface Props {
@@ -38,10 +43,8 @@ const PopupAddBill = forwardRef((props: Props, ref: any) => {
   const minDate = new Date(new Date().setFullYear(maxDate.getFullYear() - 10))
   const [billAmount, setBillAmount] = useState('')
   const [remark, setRemark] = useState('')
-  const [expense, setExpense] = useState([])
-  const [income, setIncome] = useState([])
-  const [expenseCategories, setExpenseCategories] = useState([])
-  const [incomeCategories, setIncomeCategories] = useState([])
+  const [expense, setExpense] = useState([]) // 支出类型数组
+  const [income, setIncome] = useState([]) // 收入类型数组
   const [selectedCategory, setSelectedCategory] = useState<CategoryIcon>({
     id: 0,
     name: ''
@@ -63,13 +66,14 @@ const PopupAddBill = forwardRef((props: Props, ref: any) => {
   }
   // 初始化编辑账单弹出层
   const initEditBill = () => {
-    setType(detail.pay_type === 1 ? 'expense' : 'income')
-    setSelectedCategory({ id: detail.type_id, name: detail.type_name })
-    setRemark(detail.remark)
-    setAmount(detail.amount)
-    setSelectedDate(dayjs(Number(detail.date)).$d)
+    setType(detail?.pay_type === 1 ? 'expense' : 'income')
+    setSelectedCategory({ id: detail?.type_id!, name: detail?.type_name! })
+    setRemark(detail?.remark!)
+    setAmount(detail?.amount!)
+    // @ts-ignore
+    setSelectedDate(dayjs(Number(detail?.date)).$d)
 
-    changeConfirmButtonColor(detail.pay_type === 1 ? 'expense' : 'income')
+    changeConfirmButtonColor(detail?.pay_type === 1 ? 'expense' : 'income')
   }
   // 编辑账单副作用
   useEffect(() => {
@@ -134,11 +138,11 @@ const PopupAddBill = forwardRef((props: Props, ref: any) => {
       Toast.info('请选择收支类型')
       return
     }
-    const params = {
+    const params: DayBillItem = {
       amount: Number(amount).toFixed(2),
       type_id: selectedCategory.id,
       type_name: selectedCategory.name,
-      date: dayjs(selectedDate).unix() * 1000,
+      date: String(dayjs(selectedDate).unix() * 1000),
       pay_type: type == 'expense' ? 1 : 2,
       remark: remark || ''
     }
@@ -279,5 +283,3 @@ const PopupAddBill = forwardRef((props: Props, ref: any) => {
 })
 
 export default PopupAddBill
-
-// TODO 骨架屏，日期选择 onchange

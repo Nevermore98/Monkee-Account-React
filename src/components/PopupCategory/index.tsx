@@ -27,7 +27,6 @@ const PopupCategory: FC<Props> = forwardRef(({ onSelect }, ref: any) => {
       setExpense(list.filter((i: BillType) => i.type === '1'))
       setIncome(list.filter((i: BillType) => i.type === '2'))
     })()
-    console.log(expense)
   }, [])
 
   if (ref) {

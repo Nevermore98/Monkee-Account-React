@@ -65,9 +65,24 @@
   text-overflow: ellipsis;
 }
 
+// 修改弹出框确认键颜色
 :global {
   .rv-dialog__confirm,
   .rv-dialog__confirm:active {
     color: @danger;
+  }
+}
+
+// 修改日器选择器字体
+:global {
+  .rv-datetime-picker {
+    font-family: WeChatSans-regular;
+  }
+}
+
+// 修改日历字体
+:global {
+  .rv-calendar {
+    font-family: WeChatSans-regular;
   }
 }

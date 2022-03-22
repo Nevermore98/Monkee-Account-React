@@ -1,6 +1,17 @@
 @import url('@/config/custom.less');
 
 .item-wrap {
+  :global {
+    .rv-cell__label {
+      // less mixin
+      .multiple-line-ellipsis();
+    }
+    // 收支金额字体加粗
+    .rv-cell__value {
+      font-weight: 500;
+      max-width: 90px;
+    }
+  }
   border-radius: 10px;
   overflow: hidden;
   box-shadow: 0px 0px 1px 0px rgba(0, 0, 0, 0.1);
@@ -42,32 +53,22 @@
     // less mixin 语法
     .button-active();
 
-    :global {
-      .rv-cell__left-icon {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        background-color: #f5f5f5;
-        border-radius: 50%;
-        height: 36px;
-        width: 36px;
-        margin-right: 10px;
-      }
-      .rv-cell__label {
-        // less mixin
-        .multiple-line-ellipsis();
-      }
-      // 收支金额字体加粗
-      .rv-cell__value {
-        font-weight: 500;
-        max-width: 90px;
-      }
+    .icon-wrap {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border-radius: 50%;
+      height: 36px;
+      width: 36px;
+      margin-right: 10px;
     }
 
     .expense-text {
+      font-family: WeChatSans-Medium;
       color: @color-text-base;
     }
     .income-text {
+      font-family: WeChatSans-Medium;
       color: @text-warning;
     }
   }

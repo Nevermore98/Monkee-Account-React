@@ -45,40 +45,6 @@ const BillItem = (props: Props) => {
         return curr
       }, 0)
     setIncome(_income)
-
-    // 直接操作 DOM 按照收支类型给图标添加不同的背景色
-
-    // icons.forEach((icon) => {
-    //   if (item.pay_type === 1) {
-    //     icon.style.backgroundColor = '#39be77'
-    //   } else {
-    //     icon.style.backgroundColor = '#ecbe25'
-    //   }
-    // })
-    const icons = document.querySelectorAll('.rv-cell__left-icon') as NodeList
-    console.log(icons)
-    bill.bills.forEach((item) => {
-      // const icons = document.getElementsByClassName(
-      //   'rv-cell__left-icon'
-      // ) as HTMLCollection
-      // console.log(icons)
-      // for (let i = 0; i < icons.length; i++) {
-      //   if (item.pay_type === 1) {
-      //     icons[i].style.background = '#39be77'
-      //   } else {
-      //     icons[i].style.background = '#ecbe25'
-      //   }
-      // }
-      icons.forEach((icon: Node) => {
-        // console.log(icon.style)
-        console.log(item.pay_type)
-        if (item.pay_type === 1) {
-          icon.style.backgroundColor = '#39be77'
-        } else {
-          icon.style.backgroundColor = '#ecbe25'
-        }
-      })
-    })
   }, [bill.bills])
 
   // 前往账单详情
@@ -104,35 +70,42 @@ const BillItem = (props: Props) => {
           </div>
         </div>
       </div>
-      {bill.bills.map((item: DayBillItem) => (
-        <Cell
-          className={s.billItem}
-          center
-          key={item.id}
-          onClick={() => goToDetail(item)}
-          title={item.type_name}
-          label={`${dayjs(Number(item.date)).format('HH:mm')}${
-            item.remark ? ' | ' + item.remark : ''
-          }`}
-          icon={
-            /** 只有再包裹一层 div，rv-cell__left-icon 才添加在该 div 上，否则在 svg 上
-             *  并且给这个 div 添加其他类名会直接加到 svg 上
-             *  无法在 rv-cell__left-icon 额外添加类名？？
-             *  */
-            <div>
-              <CustomIcon name={(typeMap as TypeMap)[item.type_id!].icon} />
-            </div>
-          }
-        >
-          <span
-            className={cx(item.pay_type === 1 ? s.expenseText : s.incomeText)}
+      {bill.bills
+        .sort((a, b) => Number(b.date) - Number(a.date))
+        .map((item: DayBillItem) => (
+          <Cell
+            className={s.billItem}
+            center
+            key={item.id}
+            onClick={() => goToDetail(item)}
+            title={item.type_name}
+            label={`${dayjs(Number(item.date)).format('HH:mm')}${
+              item.remark ? ' | ' + item.remark : ''
+            }`}
+            icon={
+              //  只有再包裹一层 <></>，初始的类名 rv-cell__left-icon 才变为自定义的类名
+              <>
+                <div
+                  className={cx({
+                    [s.iconWrap]: true,
+                    [s.expenseIcon]: item.pay_type === 1,
+                    [s.incomeIcon]: item.pay_type === 2
+                  })}
+                >
+                  <CustomIcon name={(typeMap as TypeMap)[item.type_id!].icon} />
+                </div>
+              </>
+            }
           >
-            {`${item.pay_type === 1 ? '-' : '+'}${Number(item.amount!).toFixed(
-              2
-            )}`}
-          </span>
-        </Cell>
-      ))}
+            <span
+              className={cx(item.pay_type === 1 ? s.expenseText : s.incomeText)}
+            >
+              {`${item.pay_type === 1 ? '-' : '+'}${Number(
+                item.amount!
+              ).toFixed(2)}`}
+            </span>
+          </Cell>
+        ))}
     </div>
   )
 }

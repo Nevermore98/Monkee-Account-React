@@ -30,6 +30,7 @@ const EditInfo = () => {
   const uploadAvatar = (file: UploaderFileListItem) => {
     console.log('file', file)
     let formData = new FormData()
+    // @ts-ignore
     formData.append('file', file.file)
     // 通过 axios 设置  'Content-Type': 'multipart/form-data', 进行文件上传。但文件只能在几十 kb 内
 

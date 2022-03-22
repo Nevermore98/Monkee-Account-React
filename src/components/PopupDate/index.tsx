@@ -56,8 +56,7 @@ const PopupDate: FC<Props> = forwardRef(({ onSelect }, ref: any) => {
         maxDate={maxDate.current}
         value={currentDate}
         onCancel={() => setVisible(false)}
-        onChange={(v) => {
-          console.log(v)
+        onChange={(v: Date) => {
           setCurrentDate(v)
         }}
         onConfirm={selectDate}

@@ -34,9 +34,6 @@ const Bill = () => {
 
   useEffect(() => {
     getBillList() // 初始化
-    console.log('categoryRef', categoryRef)
-    console.log('dateRef', dateRef)
-    console.log('currentTime', currentTime)
   }, [page, currentCategory, currentTime])
 
   // 获取账单方法
@@ -95,7 +92,7 @@ const Bill = () => {
     setPage(1)
     setCurrentCategory(item)
   }
-  // TODO 存在过期闭包的 bug
+
   const handleSelectDate = (item: Date) => {
     setPage(1)
     setCurrentTime(dayjs(item).format('YYYY-MM'))
@@ -109,6 +106,7 @@ const Bill = () => {
           size="small"
           type="primary"
           className={s.typeWrap}
+          // @ts-ignore
           onClick={() => categoryRef.current!.show()}
         >
           <span className={s.allType}>
@@ -121,6 +119,7 @@ const Bill = () => {
           <Button
             className={s.time}
             size="mini"
+            // @ts-ignore
             onClick={() => dateRef.current!.show()}
           >
             <span className={s.time}>
@@ -157,6 +156,7 @@ const Bill = () => {
         round
         type="primary"
         className={s.addWrap}
+        // @ts-ignore
         onClick={() => addBillRef.current!.show()}
       >
         <CustomIcon name="icon-add-bill" className={s.addIcon} />
