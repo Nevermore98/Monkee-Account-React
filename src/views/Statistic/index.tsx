@@ -110,6 +110,7 @@ const Statistic = () => {
             },
             data: chartData,
             label: {
+              fontFamily: 'WeChatSans-Regular',
               color: '#ccc',
               position: 'outside',
               formatter: '{b} {d}%',

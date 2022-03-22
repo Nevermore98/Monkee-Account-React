@@ -6,8 +6,10 @@ import {
   Calendar,
   Field,
   NumberKeyboard,
-  Toast
+  Toast,
+  ConfigProvider
 } from 'react-vant'
+import type { CalendarInstance } from 'react-vant'
 import { Cross } from '@react-vant/icons'
 import s from './style.module.less'
 import CustomIcon from '../CustomIcon'
@@ -38,10 +40,12 @@ const PopupAddBill = forwardRef((props: Props, ref: any) => {
     () => dayjs(selectedDate).format('MM-DD'),
     [selectedDate]
   )
+  const maxDate = new Date()
+  const minDate = new Date(new Date().setFullYear(maxDate.getFullYear() - 2))
+  const calendarRef = useRef<CalendarInstance>(null)
+  // const minDate = new Date(2021, 5, 1)
   // const maxDate = new Date()
-  const [maxDate, setMaxDate] = useState(new Date())
-  const minDate = new Date(new Date().setFullYear(maxDate.getFullYear() - 10))
-  const [billAmount, setBillAmount] = useState('')
+
   const [remark, setRemark] = useState('')
   const [expense, setExpense] = useState([]) // 支出类型数组
   const [income, setIncome] = useState([]) // 收入类型数组
@@ -78,6 +82,9 @@ const PopupAddBill = forwardRef((props: Props, ref: any) => {
   // 编辑账单副作用
   useEffect(() => {
     if (detailId) {
+      // 进入编辑账单页，设置日历的选中为该账单的记账日期
+      // @ts-ignore
+      calendarRef.current?.reset(dayjs(Number(detail?.date)).$d)
       initEditBill()
     }
   }, [detail])
@@ -105,9 +112,14 @@ const PopupAddBill = forwardRef((props: Props, ref: any) => {
 
   const closePopAdd = () => {
     if (detailId) {
+      // 编辑账单页，不保存直接关闭弹出层，重设日历选中日期为记账日期
+      // @ts-ignore
+      calendarRef.current?.reset(dayjs(Number(detail?.date)).$d)
       initEditBill()
     } else {
       initAddBill()
+      // 不为编辑账单时，重设日历选中日期为今日日期
+      calendarRef.current?.reset()
     }
     setVisible(false)
   }
@@ -119,8 +131,8 @@ const PopupAddBill = forwardRef((props: Props, ref: any) => {
   }
 
   const chooseDate = (value: any) => {
-    setCalendarVisible(false)
     setSelectedDate(value)
+    setCalendarVisible(false)
     console.log(selectedDate)
   }
 
@@ -176,6 +188,12 @@ const PopupAddBill = forwardRef((props: Props, ref: any) => {
     }
   }
 
+  // const calendarVars = {
+  //   calendarPopupHeight: '62%',
+  //   calendarSelectedDayBackgroundColor: '#39be77'
+  //   // calendarHeaderTitleHeight: '40px'
+  // }
+
   return (
     <Popup
       visible={visible}
@@ -213,17 +231,19 @@ const PopupAddBill = forwardRef((props: Props, ref: any) => {
           </Button>
         </div>
         {/* 日历弹出层 */}
+        {/* <ConfigProvider themeVars={calendarVars}> */}
+        {/* 滑动到底部，会出现无法滑动的 bug： https://www.cnblogs.com/xiahj/p/8036419.html */}
         <Calendar
+          ref={calendarRef}
+          color="#39be77"
           showConfirm={false}
           visible={calendarVisible}
           onClose={() => setCalendarVisible(false)}
-          // onConfirm 接受 CalendarValue 类型
           onConfirm={(v) => chooseDate(v)}
           minDate={minDate}
           maxDate={maxDate}
-          lazyRender
-          rowHeight={60}
-        ></Calendar>
+        />
+
         {/* 金额显示框 */}
         <div className={s.numberPad}>
           <span className={s.prefix}>￥</span>

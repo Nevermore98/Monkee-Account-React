@@ -7,17 +7,14 @@ global 放外层会影响所有组件的样式
 */
 :global {
   .rv-calendar__popup {
-    height: 62% !important;
-    .rv-calendar__header-title {
-      height: 40px;
-    }
-    .rv-calendar__selected-day {
-      background-color: @primary;
-    }
+    height: 64% !important;
+  }
+  .rv-calendar__header-title {
+    height: 40px;
   }
 }
 .add-wrap {
-  // font-family: WeChatSans;
+  font-family: WeChatSans-Regular;
   padding-top: 12px;
   :global {
     .rv-number-keyboard {
@@ -29,16 +26,6 @@ global 放外层会影响所有组件的样式
         background-color: @primary;
       }
     }
-    // calendar 始终修改不了，只能在最外边定义 :global 了
-    // .rv-calendar__popup {
-    //   height: 62% !important;
-    //   .rv-calendar__header-title {
-    //     height: 40px;
-    //   }
-    //   .rv-calendar__selected-day {
-    //     background-color: @primary;
-    //   }
-    // }
     .rv-field {
       padding: 0;
       &__label {
@@ -128,6 +115,7 @@ global 放外层会影响所有组件的样式
       }
     }
   }
+
   .numberPad {
     padding-bottom: 12px;
     border-bottom: 1px solid #e9e9e9;
