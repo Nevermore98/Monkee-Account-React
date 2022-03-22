@@ -1840,10 +1840,10 @@ react-transition-group@^4.4.1:
     loose-envify "^1.4.0"
     prop-types "^15.6.2"
 
-react-vant@^2.0.0-alpha.20:
-  version "2.0.0-alpha.20"
-  resolved "https://registry.npmmirror.com/react-vant/-/react-vant-2.0.0-alpha.20.tgz"
-  integrity sha512-STL+JDFuRSy45/dHoVNyJADNezz6fYR8dCCxqCncjEqdPsZ2KkpsHROCUjADAto1fHjms0CRR6dKMKYUF6CCpA==
+react-vant@^2.0.0-alpha.23:
+  version "2.0.0-beat.1"
+  resolved "https://registry.npmmirror.com/react-vant/-/react-vant-2.0.0-beat.1.tgz#7cf8e9e6f1f18d52ec3908c7e851d737ffc45e52"
+  integrity sha512-/2OAeHoHyryzSpC8d/nAQ+cPWRZEpOmStecTfIxKjc4MuA5bv5s3DEi7b8VTcioEA3PZIlMwv3mxZWro/euVUQ==
   dependencies:
     "@react-spring/web" "^9.3.0"
     "@react-vant/icons" "0.0.6"

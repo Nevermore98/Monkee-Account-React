@@ -1,5 +1,5 @@
 import dayjs from 'dayjs'
-import React, { FC, forwardRef, useState } from 'react'
+import React, { FC, forwardRef, useRef, useState } from 'react'
 import { DatetimePicker, Popup } from 'react-vant'
 
 interface Props {
@@ -17,9 +17,11 @@ const PopupDate: FC<Props> = forwardRef(({ onSelect }, ref: any) => {
    * 正确的做法是将minDate作为一个数据定义在data函数中。
    * https://3lang3.github.io/react-vant/#/zh-CN/datetime-picker
    */
-  const [maxDate, setMaxDate] = useState(new Date())
+  const maxDate = useRef(new Date())
 
-  const minDate = new Date(new Date().setFullYear(maxDate.getFullYear() - 10))
+  const minDate = new Date(
+    new Date().setFullYear(maxDate.current.getFullYear() - 10)
+  )
 
   const selectDate = (item: Date) => {
     setCurrentDate(item)
@@ -46,10 +48,18 @@ const PopupDate: FC<Props> = forwardRef(({ onSelect }, ref: any) => {
     >
       <DatetimePicker
         type="year-month"
+        // 滑动持续时间调短点，避免赋值跟不上确认事件
+        // react-vant 相比于 vant，onChange 改变后才赋值
+        swipeDuration={250}
+        itemHeight={48}
         minDate={minDate}
-        maxDate={maxDate}
+        maxDate={maxDate.current}
         value={currentDate}
         onCancel={() => setVisible(false)}
+        onChange={(v) => {
+          console.log(v)
+          setCurrentDate(v)
+        }}
         onConfirm={selectDate}
         title="选择年月"
         formatter={(type: string, val: string) => {

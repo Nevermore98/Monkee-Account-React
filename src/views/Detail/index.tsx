@@ -64,7 +64,6 @@ const Detail = () => {
     <>
       <Header title="账单详情" />
       <div className={s.detail}>
-        {/* TODO 记录时间居中 */}
         {Object.keys(detail).length === 0 ? (
           <div className={s.skeletonWrap}>
             <Skeleton title round row={3} />
