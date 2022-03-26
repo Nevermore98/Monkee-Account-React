@@ -1,0 +1,24 @@
+@import url('@/config/custom.less');
+.about {
+  padding: 16px;
+  .content {
+    :global {
+      .rv-typography {
+        font-size: 14px;
+        color: @color-text-caption;
+        margin-bottom: 12px;
+        line-height: 24px;
+      }
+    }
+    a {
+      color: #39be77;
+      text-decoration: underline;
+    }
+    ul {
+      margin-left: 14px;
+      li {
+        list-style: disc;
+      }
+    }
+  }
+}

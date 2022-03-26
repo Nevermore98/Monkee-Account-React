@@ -1,5 +1,5 @@
 import React, { useCallback, useState } from 'react'
-import { Button, Field, Checkbox, Toast } from 'react-vant'
+import { Button, Field, Checkbox, Toast, Typography } from 'react-vant'
 import Captcha from 'react-captcha-code'
 import { EyeO, ClosedEye, Down } from '@react-vant/icons'
 
@@ -133,21 +133,34 @@ const Login = () => {
 
       <div className={s.terms}>
         <Checkbox
-
-
-
-
           checked={checked}
           onChange={setChecked}
           checkedColor="#39be77"
         />
-        {/* TODO 协议链接 */}
         <div className={s.termsText}>
-          我已阅读并同意&nbsp;
-          <a href="">《萌奇记账用户协议》</a>
-          、&nbsp;<a href="">《萌奇记账</a>
-          <br />
-          <a href="">隐私政策》</a>
+          <Typography.Text size="xs">
+            我已阅读并同意{' '}
+            <Typography.Text
+              size="xs"
+              underline
+              onClick={() => {
+                Toast.info('祝您体验愉快~')
+              }}
+            >
+              《萌奇记账用户协议》
+            </Typography.Text>
+            、
+            <br />
+            <Typography.Text
+              size="xs"
+              underline
+              onClick={() => {
+                Toast.info('个人学习项目，请不要存放重要信息')
+              }}
+            >
+              《萌奇记账隐私政策》
+            </Typography.Text>
+          </Typography.Text>
         </div>
       </div>
     </div>
