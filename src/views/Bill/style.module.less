@@ -51,24 +51,33 @@
       align-items: center;
       margin-top: 8px;
       font-size: 14px;
-      .time {
-        margin-right: 4px;
-        line-height: 18px;
-        min-width: 87px;
+      .timeButton {
+        display: flex;
+        align-items: center;
+        min-width: 80px;
         font-size: 14px;
         color: #fff;
         background-color: @primary;
         border: none;
         border-radius: 4px;
-        :global {
-          .rv-icon-n-sort-down {
-            margin-left: 2px;
-            vertical-align: 0em;
+        .time {
+          // 时间字体无法垂直居中，出此下策
+          transform: translateY(1px);
+          line-height: 18px;
+          :global {
+            .rv-icon-n-sort-down {
+              margin-left: 2px;
+              vertical-align: 0em;
+            }
           }
         }
       }
       .expense {
+        .one-line-ellipsis();
         margin-right: 10px;
+      }
+      .income {
+        .one-line-ellipsis();
       }
     }
   }
@@ -78,6 +87,47 @@
     overflow-y: scroll;
     background-color: #f5f5f5;
     padding: 8px;
+    // 下拉刷新不被遮挡
+    :global {
+      .za-pull {
+        overflow: unset;
+
+        .custom-control {
+          display: flex;
+          align-items: center;
+          padding: 10px 0;
+          height: 50px;
+          font-size: 14px;
+          color: @rv-gray-6;
+          .za-activity-indicator {
+            svg {
+              width: 1em;
+              height: 1em;
+              transform: translateX(3px);
+              // vertical-align: -0.5em;
+              fill: currentColor;
+              overflow: hidden;
+            }
+          }
+          .za-icon--success {
+            margin-right: 4px;
+          }
+        }
+      }
+      .za-pull__load {
+        height: 100%;
+      }
+    }
+    // .loading {
+    //   height: 30px;
+    //   font-size: 14px;
+    //   color: @rv-gray-6;
+    // }
+    // .load-complete {
+    //   height: 30px;
+    //   font-size: 14px;
+    //   color: @rv-gray-6;
+    // }
   }
   .add-wrap {
     position: fixed;

@@ -32,7 +32,7 @@ const EditInfo = () => {
     let formData = new FormData()
     // @ts-ignore
     formData.append('file', file.file)
-    // 通过 axios 设置  'Content-Type': 'multipart/form-data', 进行文件上传。但文件只能在几十 kb 内
+    // 通过 axios 设置  'Content-Type': 'multipart/form-data', 进行文件上传。
 
     // @ts-ignore
     axios({
@@ -51,6 +51,7 @@ const EditInfo = () => {
   // 图片超过限定大小
   const onOversize = (file: any) => {
     console.log(file)
+    // TODO 调整文件大小限制
     Toast('文件大小不能超过 50KB')
   }
 
@@ -78,6 +79,7 @@ const EditInfo = () => {
               <span>支持 jpg、png、jpeg 格式大小 50KB!!?? 以内的图片</span>
               <Uploader
                 afterRead={uploadAvatar}
+                // TODO 调整文件大小限制
                 maxSize={50 * 1024}
                 onOversize={onOversize}
               >

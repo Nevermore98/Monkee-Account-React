@@ -119,6 +119,7 @@ const Login = () => {
           onClick={onSubmit}
           icon={<Down rotate={-90} />}
           disabled={judgeUndone()}
+          color="#39be77"
         ></Button>
       </div>
 
@@ -131,7 +132,15 @@ const Login = () => {
       </div>
 
       <div className={s.terms}>
-        <Checkbox checked={checked} onChange={setChecked} />
+        <Checkbox
+
+
+
+
+          checked={checked}
+          onChange={setChecked}
+          checkedColor="#39be77"
+        />
         {/* TODO 协议链接 */}
         <div className={s.termsText}>
           我已阅读并同意&nbsp;
