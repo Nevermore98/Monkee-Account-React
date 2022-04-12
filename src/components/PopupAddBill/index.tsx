@@ -79,15 +79,19 @@ const PopupAddBill = forwardRef((props: Props, ref: any) => {
 
     changeConfirmButtonColor(detail?.pay_type === 1 ? 'expense' : 'income')
   }
-  // 编辑账单副作用
+  // 初始化编辑账单页数据
   useEffect(() => {
     if (detailId) {
-      // 进入编辑账单页，设置日历的选中为该账单的记账日期
-      // @ts-ignore
-      calendarRef.current?.reset(dayjs(Number(detail?.date)).$d)
       initEditBill()
     }
   }, [detail])
+  // 编辑账单，弹出日历时设置日历选中该账单的记账日期
+  useEffect(() => {
+    if (detail && calendarVisible) {
+      // @ts-ignore
+      calendarRef.current?.reset(dayjs(Number(detail?.date)).$d)
+    }
+  }, [calendarVisible])
 
   /**
    * useEffect async 函数
@@ -104,10 +108,7 @@ const PopupAddBill = forwardRef((props: Props, ref: any) => {
       setIncome(income)
     }
     fetchCategoryData()
-    // // 没有 id 的情况下，说明是新建账单。
-    // if (!detail.id) {
-    //   setCurrentType(_expense[0])
-    // }
+    calendarRef.current?.reset()
   }, [])
 
   const closePopAdd = () => {
@@ -133,7 +134,6 @@ const PopupAddBill = forwardRef((props: Props, ref: any) => {
   const chooseDate = (value: any) => {
     setSelectedDate(value)
     setCalendarVisible(false)
-    console.log(selectedDate)
   }
 
   const chooseCategory = (item: CategoryIcon) => {
@@ -187,12 +187,6 @@ const PopupAddBill = forwardRef((props: Props, ref: any) => {
       }
     }
   }
-
-  // const calendarVars = {
-  //   calendarPopupHeight: '62%',
-  //   calendarSelectedDayBackgroundColor: '#39be77'
-  //   // calendarHeaderTitleHeight: '40px'
-  // }
 
   return (
     <Popup

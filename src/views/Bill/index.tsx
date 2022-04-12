@@ -40,6 +40,7 @@ const Bill = () => {
         currentCategory.id || 'all'
       }&page=${page}&page_size=5`
     )
+    console.log(data)
     // 初始化时，分页为 1，设置一页。其他情况，连接旧 list。
     if (page === 1) {
       setList(data.list)
@@ -131,10 +132,7 @@ const Bill = () => {
             refresh={{
               state: refreshing,
               handler: refreshData,
-              render: (
-                refreshState: unknown,
-                percent: number
-              ) => {
+              render: (refreshState: unknown, percent: number) => {
                 const cls = 'custom-control'
                 switch (refreshState) {
                   case REFRESH_STATE.pull:

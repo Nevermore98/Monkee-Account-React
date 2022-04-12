@@ -1,0 +1,24 @@
+@import url('@/config/custom.less');
+.no-match{
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  .return-button {
+    color: #fff;
+    background-color: @primary;
+    border: none;
+  }
+  :global{
+    .rv-empty{
+      padding: 0 0 20px 0;
+
+      .rv-empty__image{
+        width: 250px;
+        height: 250px;
+      }
+    }
+  }
+}
