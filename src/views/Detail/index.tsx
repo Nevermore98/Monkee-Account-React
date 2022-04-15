@@ -11,6 +11,7 @@ import { ReqDetail, TypeMap } from '@/api/bill'
 import { Button, Dialog, Field, Skeleton, Toast } from 'react-vant'
 import dayjs from 'dayjs'
 import PopupAddBill from '@/components/PopupAddBill'
+import axios from 'axios'
 
 const Detail = () => {
   //@ts-ignore
@@ -20,17 +21,14 @@ const Detail = () => {
   // 查询字符串解析插件
   const { id } = qs.parse(location.search)
   const editRef = useRef()
-  console.log(location)
-  console.log(id)
 
   useEffect(() => {
     getDetail()
-    console.log(detail)
   }, [])
 
   const getDetail = async () => {
     const { data } = await get(`/api/bill/detail?id=${id}`)
-    console.log(detail)
+    console.log(data)
     setDetail(data)
   }
 
@@ -41,7 +39,7 @@ const Detail = () => {
       confirmButtonText: '删除'
     })
       .then(async () => {
-        const { data } = await post('/api/bill/delete', { id })
+        const { data } = await axios.delete('/api/bill/detail', { data: { id }})
         Toast.success('删除成功')
         setTimeout(() => {
           navigate(-1)
@@ -57,7 +55,7 @@ const Detail = () => {
     editRef.current!.show()
     // 异步执行，因为弹出层弹出需要时间，同步执行就获取不到 button
     setTimeout(() => {
-      changeConfirmButtonColor(detail.pay_type === 1 ? 'expense' : 'income')
+      changeConfirmButtonColor(detail.type === 1 ? 'expense' : 'income')
     }, 0)
   }
 
@@ -76,23 +74,23 @@ const Detail = () => {
               <span
                 className={cx({
                   [s.iconWrap]: true,
-                  [s.expense]: detail.pay_type === 1,
-                  [s.income]: detail.pay_type === 2
+                  [s.expense]: detail.type === 1,
+                  [s.income]: detail.type === 2
                 })}
               >
                 <CustomIcon
                   name={
-                    detail.type_id
-                      ? (typeMap as TypeMap)[detail.type_id].icon
+                    detail.category_id
+                      ? (typeMap as TypeMap)[detail.category_id].icon
                       : '0'
                   }
                 />
               </span>
-              <span className={s.typeName}>{detail.type_name || ''}</span>
+              <span className={s.typeName}>{detail.category_name || ''}</span>
             </div>
             {/* 收支金额 */}
             <div className={s.amount}>
-              {detail.pay_type === 1 ? (
+              {detail.type === 1 ? (
                 <div className={cx(s.expense)}>-{detail.amount}</div>
               ) : (
                 <div className={cx(s.income)}>+{detail.amount}</div>
@@ -102,7 +100,7 @@ const Detail = () => {
             <div className={s.info}>
               <Field
                 label="记录时间"
-                value={dayjs(Number(detail.date)).format(
+                value={dayjs(detail.datetime).format(
                   'YYYY年MM月DD日 HH:mm'
                 )}
                 readonly

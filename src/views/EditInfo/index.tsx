@@ -1,5 +1,5 @@
 import Header from '@/components/Header'
-import { get, imgUrlTrans, post } from '@/utils'
+import { get, imgUrlTrans, post, put } from '@/utils'
 import React, { useEffect, useState } from 'react'
 import { Button, Field, Toast, Uploader } from 'react-vant'
 import type { UploaderFileListItem } from 'react-vant'
@@ -21,8 +21,7 @@ const EditInfo = () => {
 
   // 获取用户信息
   const getUserInfo = async () => {
-    const { data } = await get('/api/user/get_userinfo')
-    console.log(data)
+    const { data } = await get('/api/user/info')
     setSignature(data.signature)
     setAvatar(imgUrlTrans(data.avatar))
   }
@@ -37,7 +36,7 @@ const EditInfo = () => {
     // @ts-ignore
     axios({
       method: 'post',
-      url: `${baseUrl}/upload`,
+      url: `${baseUrl}/avatar`,
       data: formData,
       headers: {
         'Content-Type': 'multipart/form-data',
@@ -51,17 +50,15 @@ const EditInfo = () => {
   // 图片超过限定大小
   const onOversize = (file: any) => {
     console.log(file)
-    // TODO 调整文件大小限制
-    Toast('文件大小不能超过 50KB')
+    Toast('文件大小不能超过 500kb')
   }
 
   // 保存修改信息
   const save = async () => {
-    const { data } = await post('/api/user/edit_userinfo', {
+    const { data } = await put('/api/user/info', {
       avatar,
       signature
     })
-    console.log(data)
     Toast.info('修改成功')
     navigate(-1)
   }
@@ -76,11 +73,11 @@ const EditInfo = () => {
           <div className={s.avatarSection}>
             <img className={s.avatar} src={avatar} alt="avatar" />
             <div className={s.desc}>
-              <span>支持 jpg、png、jpeg 格式大小 50KB!!?? 以内的图片</span>
+              <span>支持 jpg、png、jpeg 格式大小 500KB 以内的图片</span>
               <Uploader
                 afterRead={uploadAvatar}
-                // TODO 调整文件大小限制
-                maxSize={50 * 1024}
+                // 文件大小限制
+                maxSize={500 * 1024}
                 onOversize={onOversize}
               >
                 <Button block type="primary" round size="small" color="#39be77">

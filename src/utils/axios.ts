@@ -5,7 +5,7 @@ import { Toast } from 'react-vant'
 const MODE = import.meta.env.MODE // 环境变量
 
 axios.defaults.baseURL =
-  MODE === 'development' ? '/api' : 'http://api.chennick.wang'
+  MODE === 'development' ? '/api' : 'monkee.online:7009/api'
 axios.defaults.withCredentials = true
 axios.defaults.headers['X-Requested-With'] = 'XMLHttpRequest'
 axios.defaults.headers['Authorization'] = `${

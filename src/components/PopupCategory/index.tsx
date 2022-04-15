@@ -18,15 +18,16 @@ const PopupCategory: FC<Props> = forwardRef(({ onSelect }, ref: any) => {
   const [income, setIncome] = useState([])
 
   useEffect(() => {
-    ;(async () => {
+    const fetchCategoryData = async () => {
       // 请求标签接口放在弹窗内，这个弹窗可能会被复用，所以请求如果放在外面，会造成代码冗余。
       const {
-        data: { list }
-      } = await get('/api/type/list')
+        data
+      } = await get('/api/category/list')
       // TODO type 修改为 1 | 2
-      setExpense(list.filter((i: BillType) => i.type === '1'))
-      setIncome(list.filter((i: BillType) => i.type === '2'))
-    })()
+      setExpense(data.filter((i: BillType) => i.type === 1))
+      setIncome(data.filter((i: BillType) => i.type === 2))
+    }
+    fetchCategoryData()
   }, [])
 
   if (ref) {

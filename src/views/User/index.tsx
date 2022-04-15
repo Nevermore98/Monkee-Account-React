@@ -2,7 +2,7 @@ import React, { useEffect, useMemo, useRef, useState } from 'react'
 import { Button, Cell, Dialog, Field, Uploader, Toast } from 'react-vant'
 import type { UploaderFileListItem } from 'react-vant'
 import axios from 'axios'
-import { get, imgUrlTrans, post, typeMap } from '@/utils'
+import { get, put, imgUrlTrans, post, typeMap } from '@/utils'
 import CustomIcon from '@/components/CustomIcon'
 import s from './style.module.less'
 import { useNavigate } from 'react-router-dom'
@@ -22,7 +22,7 @@ const User = () => {
   }, [])
   // 获取用户信息
   const getUserInfo = async () => {
-    const { data } = await get('/api/user/get_userinfo')
+    const { data } = await get('/api/user/info')
     console.log(data)
     setUsername(data.username)
     setUid(data.id)
@@ -38,7 +38,7 @@ const User = () => {
   // 暂时无法实现点击头像上传图片后，再提交 post 请求
   // 修改签名
   const modifySignature = async () => {
-    const { data } = await post('/api/user/edit_userinfo', {
+    const { data } = await put('/api/user/info', {
       avatar,
       signature
     })

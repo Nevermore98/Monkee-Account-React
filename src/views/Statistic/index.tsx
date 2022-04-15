@@ -39,23 +39,23 @@ const Statistic = () => {
 
   // 获取月度账单数据
   const getMouthBillData = async () => {
-    const { data } = await get(`/api/bill/data?date=${curMonth}`)
+    const { data } = await get(`/api/bill/statistics?datetime=${curMonth}`)
     console.log(data)
 
     setTotalExpense(data.total_expense)
     setTotalIncome(data.total_income)
     // 过滤支出和收入
-    const expense_data = data.total_data
-      .filter((item: ReqMonthCategoryData) => item.pay_type === 1)
+    const expense_data = data.category_statistics
+      .filter((item: ReqMonthCategoryData) => item.type === 1)
       .sort(
         (a: ReqMonthCategoryData, b: ReqMonthCategoryData) =>
-          b.number - a.number
+          b.total_category_amount - a.total_category_amount
       )
-    const income_data = data.total_data
-      .filter((item: ReqMonthCategoryData) => item.pay_type === 2)
+    const income_data = data.category_statistics
+      .filter((item: ReqMonthCategoryData) => item.type === 2)
       .sort(
         (a: ReqMonthCategoryData, b: ReqMonthCategoryData) =>
-          b.number - a.number
+          b.total_category_amount - a.total_category_amount
       )
     setExpenseData(expense_data)
     setIncomeData(income_data)
@@ -81,8 +81,8 @@ const Statistic = () => {
       const pieChart = echarts.init(document.getElementById('pie-chart'))
       const chartData = data.map((item: ReqMonthCategoryData) => {
         return {
-          value: item.number,
-          name: item.type_name
+          value: item.total_category_amount,
+          name: item.category_name
         }
       })
 
@@ -90,10 +90,10 @@ const Statistic = () => {
         visualMap: {
           show: false,
           min: Math.min(
-            ...data.map((item: ReqMonthCategoryData) => item.number)
+            ...data.map((item: ReqMonthCategoryData) => item.total_category_amount)
           ),
           max: Math.max(
-            ...data.map((item: ReqMonthCategoryData) => item.number)
+            ...data.map((item: ReqMonthCategoryData) => item.total_category_amount)
           ),
           inRange: {
             colorLightness: [0.8, 0.5]
@@ -213,7 +213,7 @@ const Statistic = () => {
           <div className={s.proportionBar}>
             {(curType === 'expense' ? expenseData : incomeData).map(
               (item: ReqMonthCategoryData) => (
-                <div key={item.type_id} className={s.billItem}>
+                <div key={item.category_id} className={s.billItem}>
                   {/* 类型图标和名字 */}
                   <div className={s.typeItem}>
                     <span
@@ -223,16 +223,16 @@ const Statistic = () => {
                       })}
                     >
                       <CustomIcon
-                        name={(typeMap as TypeMap)[item.type_id].icon}
+                        name={(typeMap as TypeMap)[item.category_id].icon}
                       />
                     </span>
-                    <span className={s.iconName}>{item.type_name}</span>
+                    <span className={s.iconName}>{item.category_name}</span>
                   </div>
                   {/* 条形图 */}
                   <span className={s.progress}>
                     <Progress
                       percentage={Number(
-                        (item.number /
+                        (item.total_category_amount /
                           Number(
                             curType == 'expense' ? totalExpense : totalIncome
                           )) *
@@ -245,7 +245,7 @@ const Statistic = () => {
                     />
                   </span>
                   <span className={s.amount}>
-                    ￥{Number(item.number).toFixed(2) || 0}
+                    ￥{Number(item.total_category_amount).toFixed(2) || 0}
                   </span>
                 </div>
               )

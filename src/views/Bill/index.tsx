@@ -36,20 +36,20 @@ const Bill = () => {
 
   const getBillList = async () => {
     const { data } = await get(
-      `/api/bill/list?date=${currentTime}&type_id=${
+      `/api/bill/list?month=${currentTime}&category_id=${
         currentCategory.id || 'all'
       }&page=${page}&page_size=5`
     )
     console.log(data)
     // 初始化时，分页为 1，设置一页。其他情况，连接旧 list。
     if (page === 1) {
-      setList(data.list)
+      setList(data.total_bill)
     } else {
-      setList(list.concat(data.list))
+      setList(list.concat(data.total_bill))
     }
-    setTotalExpense(data.totalExpense.toFixed(2))
-    setTotalIncome(data.totalIncome.toFixed(2))
-    setTotalPage(data.totalPage)
+    setTotalExpense(data.total_expense.toFixed(2))
+    setTotalIncome(data.total_income.toFixed(2))
+    setTotalPage(data.total_page)
     // 上滑加载成功状态
     setLoading(LOAD_STATE.success)
     // 下拉刷新成功状态

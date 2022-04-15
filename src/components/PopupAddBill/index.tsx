@@ -14,7 +14,7 @@ import { Cross } from '@react-vant/icons'
 import s from './style.module.less'
 import CustomIcon from '../CustomIcon'
 import dayjs from 'dayjs'
-import { changeConfirmButtonColor, get, post, typeMap } from '@/utils'
+import { changeConfirmButtonColor, get, put, post, typeMap } from '@/utils'
 import {
   BillType,
   CategoryIcon,
@@ -70,14 +70,14 @@ const PopupAddBill = forwardRef((props: Props, ref: any) => {
   }
   // 初始化编辑账单弹出层
   const initEditBill = () => {
-    setType(detail?.pay_type === 1 ? 'expense' : 'income')
-    setSelectedCategory({ id: detail?.type_id!, name: detail?.type_name! })
+    setType(detail?.type === 1 ? 'expense' : 'income')
+    setSelectedCategory({ id: detail?.category_id!, name: detail?.category_name! })
     setRemark(detail?.remark!)
     setAmount(detail?.amount!)
     // @ts-ignore
-    setSelectedDate(dayjs(Number(detail?.date)).$d)
+    setSelectedDate(dayjs(detail?.datetime))
 
-    changeConfirmButtonColor(detail?.pay_type === 1 ? 'expense' : 'income')
+    changeConfirmButtonColor(detail?.type === 1 ? 'expense' : 'income')
   }
   // 初始化编辑账单页数据
   useEffect(() => {
@@ -89,9 +89,9 @@ const PopupAddBill = forwardRef((props: Props, ref: any) => {
   useEffect(() => {
     if (detail && calendarVisible) {
       // @ts-ignore
-      calendarRef.current?.reset(dayjs(Number(detail?.date)).$d)
+      calendarRef.current?.reset(dayjs(detail?.datetime).$d)
     }
-  }, [calendarVisible])
+  }, [visible])
 
   /**
    * useEffect async 函数
@@ -100,10 +100,10 @@ const PopupAddBill = forwardRef((props: Props, ref: any) => {
   useEffect(() => {
     const fetchCategoryData = async () => {
       const {
-        data: { list }
-      } = await get('/api/type/list')
-      const expense = list.filter((i: BillType) => i.type === '1') // 支出类型
-      const income = list.filter((i: BillType) => i.type === '2') // 收入类型
+        data
+      } = await get('/api/category/list')
+      const expense = data.filter((i: BillType) => i.type === 1) // 支出类型
+      const income = data.filter((i: BillType) => i.type === 2) // 收入类型
       setExpense(expense)
       setIncome(income)
     }
@@ -115,7 +115,7 @@ const PopupAddBill = forwardRef((props: Props, ref: any) => {
     if (detailId) {
       // 编辑账单页，不保存直接关闭弹出层，重设日历选中日期为记账日期
       // @ts-ignore
-      calendarRef.current?.reset(dayjs(Number(detail?.date)).$d)
+      calendarRef.current?.reset(dayjs(detail?.datetime).$d)
       initEditBill()
     } else {
       initAddBill()
@@ -152,16 +152,17 @@ const PopupAddBill = forwardRef((props: Props, ref: any) => {
     }
     const params: DayBillItem = {
       amount: Number(amount).toFixed(2),
-      type_id: selectedCategory.id,
-      type_name: selectedCategory.name,
-      date: String(dayjs(selectedDate).unix() * 1000),
-      pay_type: type == 'expense' ? 1 : 2,
+      category_id: selectedCategory.id,
+      category_name: selectedCategory.name,
+      // date: String(dayjs(selectedDate).unix() * 1000),
+      datetime: String(dayjs(selectedDate).format('YYYY-MM-DD HH:mm:ss')),
+      type: type == 'expense' ? 1 : 2,
       remark: remark || ''
     }
     if (detailId) {
       params.id = detailId
       // 如果有 id 即是在编辑账单详情，需要调用详情更新接口
-      const result = await post('/api/bill/update', params)
+      const result = await put('/api/bill/detail', params)
       Toast.success('修改成功')
     } else {
       const result = await post('/api/bill/add', params)
@@ -170,9 +171,12 @@ const PopupAddBill = forwardRef((props: Props, ref: any) => {
       setSelectedCategory({ id: 0, name: '' })
       setSelectedDate(dayjs())
       setRemark('')
+      calendarRef.current?.reset()
       Toast.info('添加成功')
     }
     setVisible(false)
+    // 添加完成后改变确认按钮颜色
+    changeConfirmButtonColor('expense')
     // 修改完成后重新加载
     if (props.onReload) props.onReload()
   }

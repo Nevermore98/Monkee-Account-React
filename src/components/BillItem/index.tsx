@@ -27,25 +27,25 @@ const BillItem = (props: Props) => {
     '星期五',
     '星期六'
   }
-  // 添加账单时，bill.bills 长度变化，触发当日收支总和计算。
+  // 添加账单时，bill.daily_bill 长度变化，触发当日收支总和计算。
   useEffect(() => {
-    // 初始化传入的 bill 内的 bills 数组内数据项，过滤出支出和收入。
-    const _expense = bill.bills
-      .filter((i) => i.pay_type === 1)
+    // 初始化传入的 bill 内的 daily_bill 数组内数据项，过滤出支出和收入。
+    const _expense = bill.daily_bill
+      .filter((i) => i.type === 1)
       .reduce((curr, item) => {
         curr += Number(item.amount)
         return curr
       }, 0)
     setExpense(_expense)
 
-    const _income = bill.bills
-      .filter((i) => i.pay_type === 2)
+    const _income = bill.daily_bill
+      .filter((i) => i.type === 2)
       .reduce((curr, item) => {
         curr += Number(item.amount)
         return curr
       }, 0)
     setIncome(_income)
-  }, [bill.bills])
+  }, [bill.daily_bill])
 
   // 前往账单详情
   const goToDetail = (item: DayBillItem) => {
@@ -70,16 +70,16 @@ const BillItem = (props: Props) => {
           </div>
         </div>
       </div>
-      {bill.bills
-        .sort((a, b) => Number(b.date) - Number(a.date))
+      {bill.daily_bill
+        .sort((a, b) => dayjs(b.datetime).unix() - dayjs(a.datetime).unix())
         .map((item: DayBillItem) => (
           <Cell
             className={s.billItem}
             center
             key={item.id}
             onClick={() => goToDetail(item)}
-            title={item.type_name}
-            label={`${dayjs(Number(item.date)).format('HH:mm')}${
+            title={item.category_name}
+            label={`${dayjs(item.datetime).format('HH:mm')}${
               item.remark ? ' | ' + item.remark : ''
             }`}
             icon={
@@ -88,19 +88,19 @@ const BillItem = (props: Props) => {
                 <div
                   className={cx({
                     [s.iconWrap]: true,
-                    [s.expenseIcon]: item.pay_type === 1,
-                    [s.incomeIcon]: item.pay_type === 2
+                    [s.expenseIcon]: item.type === 1,
+                    [s.incomeIcon]: item.type === 2
                   })}
                 >
-                  <CustomIcon name={(typeMap as TypeMap)[item.type_id!].icon} />
+                  <CustomIcon name={(typeMap as TypeMap)[item.category_id!].icon} />
                 </div>
               </>
             }
           >
             <span
-              className={cx(item.pay_type === 1 ? s.expenseText : s.incomeText)}
+              className={cx(item.type === 1 ? s.expenseText : s.incomeText)}
             >
-              {`${item.pay_type === 1 ? '-' : '+'}${Number(
+              {`${item.type === 1 ? '-' : '+'}${Number(
                 item.amount!
               ).toFixed(2)}`}
             </span>

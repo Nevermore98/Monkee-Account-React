@@ -2,39 +2,32 @@ import React, { useState } from 'react'
 import { Button, Toast, Field, Form } from 'react-vant'
 import { EyeO, ClosedEye } from '@react-vant/icons'
 import Header from '@/components/Header'
-import { post } from '@/utils'
+import { put } from '@/utils'
 
 import s from './style.module.less'
 import { useNavigate } from 'react-router-dom'
 
-const ModifyPassword = (props: any) => {
+const ModifyPassword = () => {
   const navigate = useNavigate()
   const [hidden1, setHidden1] = useState(true)
   const [hidden2, setHidden2] = useState(true)
   const [hidden3, setHidden3] = useState(true)
 
   // 提交修改
-  // 参考代码：https://ant.design/components/form-cn/#components-form-demo-control-hooks
   const [form] = Form.useForm()
-  const onFinish = (values: any) => {
+  const onFinish = async (values: any) => {
     console.log(values)
-    console.log(props)
-    props.form.validateFields(async (error: any) => {
-      // error 为真时，表单验证不通过
-      if (!error) {
-        if (values.newPassword != values.newPassword2) {
-          Toast.info('新密码输入不一致')
-          return
-        }
-        await post('/api/user/modify_pass', {
-          old_pass: values.oldPassword,
-          new_pass: values.newPassword,
-          new_pass2: values.newPassword2
-        })
-        Toast.info('修改成功')
-        navigate(-1)
-      }
+    if (values.newPassword != values.newPassword2) {
+      Toast.info('新密码输入不一致')
+      return
+    }
+    await put('/api/user/password', {
+      old_pass: values.oldPassword,
+      new_pass: values.newPassword,
+      new_pass2: values.newPassword2
     })
+    Toast.info('修改成功')
+    navigate(-1)
   }
 
   return (

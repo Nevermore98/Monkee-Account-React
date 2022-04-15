@@ -3,8 +3,10 @@ import { baseUrl } from '@/config'
 const MODE = import.meta.env.MODE // 环境变量
 
 export const get = axios.get
-
 export const post = axios.post
+export const patch = axios.patch
+export const put = axios.put
+// export const delete = axios.delete 严格模式无法使用 delete
 
 // 直接操作 DOM 实现切换数字键盘确认键颜色
 export const changeConfirmButtonColor = (type: string) => {
@@ -23,7 +25,7 @@ export const imgUrlTrans = (url: string) => {
     return url
   } else {
     url = `${
-      MODE == 'development' ? 'http://api.chennick.wang' : baseUrl
+      MODE == 'development' ? 'http://127.0.0.1:7009' : baseUrl
     }${url}`
     return url
   }
