@@ -90,7 +90,7 @@ const Login = () => {
           onChange={(value) => setUsername(value)}
           clearable
           border={false}
-          placeholder="请输入账号"
+          placeholder="测试账号：admin"
         />
         <Field
           value={password}
@@ -99,7 +99,7 @@ const Login = () => {
           rightIcon={hidden ? <ClosedEye /> : <EyeO />}
           border={false}
           onClickRightIcon={() => setHidden(!hidden)}
-          placeholder="请输入密码"
+          placeholder="测试密码：123456"
         />
         {type === 'register' ? (
           <Field
