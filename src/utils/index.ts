@@ -25,7 +25,7 @@ export const imgUrlTrans = (url: string) => {
     return url
   } else {
     url = `${
-      MODE == 'development' ? 'http://127.0.0.1:7009' : baseUrl
+      MODE == 'development' ? 'http://monkee.online:7009' : baseUrl
     }${url}`
     return url
   }

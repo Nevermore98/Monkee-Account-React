@@ -36,7 +36,7 @@ const EditInfo = () => {
     // @ts-ignore
     axios({
       method: 'post',
-      url: `${baseUrl}/avatar`,
+      url: `/api/avatar`,
       data: formData,
       headers: {
         'Content-Type': 'multipart/form-data',
