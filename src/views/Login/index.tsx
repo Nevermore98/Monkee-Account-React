@@ -7,7 +7,7 @@ import s from './style.module.less'
 import { post } from '@/utils'
 
 const Login = () => {
-  const [type, setType] = useState('register')
+  const [type, setType] = useState('login')
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [captcha, setCaptcha] = useState('')
