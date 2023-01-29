@@ -12,7 +12,7 @@ import { useNavigate } from 'react-router-dom'
 const EditInfo = () => {
   const [avatar, setAvatar] = useState('')
   const [signature, setSignature] = useState('')
-  const token = localStorage.getItem('token')
+  const token = localStorage.getItem('account_react_token')
   const navigate = useNavigate()
 
   useEffect(() => {

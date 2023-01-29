@@ -12,7 +12,7 @@ const User = () => {
   const [signature, setSignature] = useState('')
   const [avatar, setAvatar] = useState('')
   const [visible, setVisible] = useState(false)
-  const token = localStorage.getItem('token')
+  const token = localStorage.getItem('account_react_token')
 
   useEffect(() => {
     getUserInfo()
@@ -45,7 +45,7 @@ const User = () => {
 
   // 退出登录
   const logout = () => {
-    localStorage.removeItem('token')
+    localStorage.removeItem('account_react_token')
     navigate('/login')
   }
 

@@ -9,7 +9,7 @@ axios.defaults.baseURL =
 axios.defaults.withCredentials = true
 axios.defaults.headers['X-Requested-With'] = 'XMLHttpRequest'
 axios.defaults.headers['Authorization'] = `${
-  localStorage.getItem('token') || null
+  localStorage.getItem('account_react_token') || null
 }`
 axios.defaults.headers.post['Content-Type'] = 'application/json'
 

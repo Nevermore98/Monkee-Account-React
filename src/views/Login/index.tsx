@@ -49,7 +49,7 @@ const Login = () => {
           username,
           password
         })
-        localStorage.setItem('token', data.token)
+        localStorage.setItem('account_react_token', data.token)
         // 刷新重新请求数据后再跳转
         window.location.href = './bill'
       } else {
