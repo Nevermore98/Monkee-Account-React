@@ -21,16 +21,15 @@ function App() {
     // Router 包裹某组件，才能在该组件使用 useLocation
     <>
       <Routes>
-        <Route path="/" element={<Navigate to="/bill" />} />
-        <Route path="/bill" element={<Bill />} />
-        <Route path="/statistic" element={<Statistic />} />
-        <Route path="/user" element={<User />} />
-        <Route path="/detail" element={<Detail />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/edit_info" element={<EditInfo />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/modify_password" element={<ModifyPassword />} />
-        <Route path="/about" element={<About />} />
+        <Route path="" element={<Navigate to="bill" />} />
+        <Route path="bill" element={<Bill />} />
+        <Route path="statistic" element={<Statistic />} />
+        <Route path="user" element={<User />} />
+        <Route path="detail" element={<Detail />} />
+        <Route path="edit_info" element={<EditInfo />} />
+        <Route path="login" element={<Login />} />
+        <Route path="modify_password" element={<ModifyPassword />} />
+        <Route path="about" element={<About />} />
         <Route path="*" element={<Nomatch />} />
       </Routes>
 

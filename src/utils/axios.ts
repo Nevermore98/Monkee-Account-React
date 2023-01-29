@@ -5,7 +5,7 @@ import { Toast } from 'react-vant'
 const MODE = import.meta.env.MODE // 环境变量
 
 axios.defaults.baseURL =
-  MODE === 'development' ? '/api' : 'http://monkee.online:7009'
+  MODE === 'development' ? '/api' : 'https://monkee.online/account-react-server'
 axios.defaults.withCredentials = true
 axios.defaults.headers['X-Requested-With'] = 'XMLHttpRequest'
 axios.defaults.headers['Authorization'] = `${
@@ -21,7 +21,8 @@ axios.interceptors.response.use((res) => {
   if (res.data.code !== 200) {
     if (res.data.msg) Toast.info(res.data.msg)
     if (res.data.code === 401) {
-      window.location.href = '/login'
+      window.location.href = '/#/login'
+      // navigate('/#/login')
     }
     return Promise.reject(res.data)
   }

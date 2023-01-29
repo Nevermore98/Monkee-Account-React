@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react'
 import { Tabbar } from 'react-vant'
-import { useNavigate } from 'react-router-dom'
-import s from './style.module.less'
+import { useNavigate, useLocation } from 'react-router-dom'
 import CustomIcon from '@/components/CustomIcon'
 
 const NavBar = () => {
   const navigate = useNavigate()
-  const [name, setName] = useState('bill')
+  const location = useLocation()
+
+  const [name, setName] = useState('/bill')
 
   // 实现类似 vue-router afterEach，直接修改 url，同步改变标签栏高亮图标
   useEffect(() => {

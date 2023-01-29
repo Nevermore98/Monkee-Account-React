@@ -49,7 +49,10 @@ const User = () => {
   // 退出登录
   const logout = () => {
     localStorage.removeItem('token')
+    // navigate('/#/login')
+    // window.location.href = '/#/login'
     navigate('/login')
+
   }
 
   return (

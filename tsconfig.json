@@ -1,5 +1,8 @@
 {
   "compilerOptions": {
+    // error TS2688: Cannot find type definition file for...random paths.
+    // https://github.com/microsoft/TypeScript/issues/27956#issuecomment-826863926
+    "typeRoots": ["node_modules/@types", "src/typings"],
     "target": "ESNext",
     "useDefineForClassFields": true,
     "lib": ["DOM", "DOM.Iterable", "ESNext"],
@@ -17,9 +20,7 @@
     "jsx": "react-jsx",
     "baseUrl": "./",
     "paths": {
-      "@/*": [
-        "src/*"
-      ]
+      "@/*": ["src/*"]
     }
   },
   "include": ["src"],
