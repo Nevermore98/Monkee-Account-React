@@ -21,8 +21,8 @@ axios.interceptors.response.use((res) => {
   if (res.data.code !== 200) {
     if (res.data.msg) Toast.info(res.data.msg)
     if (res.data.code === 401) {
-      window.location.href = '/#/login'
-      // navigate('/#/login')
+      // 注意 ./ 否则会直接跳转到域名根目录
+      window.location.href = './login'
     }
     return Promise.reject(res.data)
   }

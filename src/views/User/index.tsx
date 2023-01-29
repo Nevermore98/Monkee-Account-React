@@ -1,12 +1,9 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react'
 import { Button, Cell, Dialog, Field, Uploader, Toast } from 'react-vant'
-import type { UploaderFileListItem } from 'react-vant'
-import axios from 'axios'
-import { get, put, imgUrlTrans, post, typeMap } from '@/utils'
+import { get, put, imgUrlTrans } from '@/utils'
 import CustomIcon from '@/components/CustomIcon'
 import s from './style.module.less'
 import { useNavigate } from 'react-router-dom'
-import { baseUrl } from '@/config'
 
 const User = () => {
   const navigate = useNavigate()
@@ -49,10 +46,7 @@ const User = () => {
   // 退出登录
   const logout = () => {
     localStorage.removeItem('token')
-    // navigate('/#/login')
-    // window.location.href = '/#/login'
     navigate('/login')
-
   }
 
   return (

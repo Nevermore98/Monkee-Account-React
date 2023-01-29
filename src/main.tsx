@@ -1,15 +1,16 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-import { HashRouter } from 'react-router-dom'
+import { BrowserRouter } from 'react-router-dom'
 import './index.less'
 import App from './App'
 import 'lib-flexible/flexible'
 
 ReactDOM.render(
   <React.StrictMode>
-    <HashRouter>
+    {/* 路由的根路径 */}
+    <BrowserRouter basename="/account-react">
       <App />
-    </HashRouter>
+    </BrowserRouter>
   </React.StrictMode>,
   document.getElementById('root')
 )

@@ -13,6 +13,7 @@ import ModifyPassword from '@/views/ModifyPassword'
 import About from '@/views/About'
 
 function App() {
+  // 此处 / 不可省略
   const showTabbarRouteList = ['/', '/bill', '/statistic', '/user']
   const location = useLocation()
   console.log(location.pathname)
@@ -21,7 +22,7 @@ function App() {
     // Router 包裹某组件，才能在该组件使用 useLocation
     <>
       <Routes>
-        <Route path="" element={<Navigate to="bill" />} />
+        <Route path="/" element={<Navigate to="bill" />} />
         <Route path="bill" element={<Bill />} />
         <Route path="statistic" element={<Statistic />} />
         <Route path="user" element={<User />} />

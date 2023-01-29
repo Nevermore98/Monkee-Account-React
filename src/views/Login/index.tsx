@@ -50,7 +50,8 @@ const Login = () => {
           password
         })
         localStorage.setItem('token', data.token)
-        window.location.href = '/'
+        // 刷新重新请求数据后再跳转
+        window.location.href = './bill'
       } else {
         if (!verify) {
           Toast.info('请输入验证码')
@@ -75,7 +76,8 @@ const Login = () => {
   return (
     <div className={s.auth}>
       <div className={s.name}>萌奇记账</div>
-      <img className={s.logo} src="/monkee.png" alt="logo" />
+      {/* 注意相对路径 */}
+      <img className={s.logo} src="./monkee.png" alt="logo" />
       <div className={s.title}>
         {type === 'login' ? (
           <span>使用账号密码登录</span>
