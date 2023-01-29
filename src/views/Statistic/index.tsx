@@ -236,7 +236,7 @@ const Statistic = () => {
                           Number(
                             curType == 'expense' ? totalExpense : totalIncome
                           )) *
-                          100
+                        100
                       )}
                       strokeWidth="6px"
                       showPivot={false}

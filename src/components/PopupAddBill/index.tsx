@@ -146,6 +146,10 @@ const PopupAddBill = forwardRef((props: Props, ref: any) => {
       Toast.info('请输入具体金额')
       return
     }
+    if (Number(amount).toFixed(2) === '0.00') {
+      Toast.info('输入金额不能为零')
+      return
+    }
     if (selectedCategory.id === 0) {
       Toast.info('请选择收支类型')
       return
